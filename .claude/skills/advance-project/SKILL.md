@@ -70,8 +70,6 @@ Read today's daily note (`obsidian daily:read vault="{{VAULT_NAME}}"`). If the c
 - Mark as `- [x]` in place in Today's Options
 - Add to `## Done Today` as `- [x] Action text — [[Project Name]] — YYYY-MM-DD`
 
-If today's daily note doesn't have a `## Today's Options` section (pre-dashboard note), fall back to reading `[[Today Pool]]` and apply the same logic there.
-
 ### 6. Surface what's next
 
 Present the remaining action menu from the project — options the user *could* work on, not prescriptions. If the achievement shifted context, note how it changes what's available.

@@ -109,10 +109,10 @@ Same as start-workday but with week-level awareness. Consider:
 - ~5-8 options grouped by area, weighted by enjoyable usefulness
 
 Include stance awareness checks (grounded in `shadow-awareness` rule — Tier 1 only):
-- *Lots of planning, little execution* → "What's the very next physical action?" (Shadow: preemption, systems-thinking from above)
-- *Grinding through tasks, ignoring meaningful work* → Surface something important and enjoyable (Shadow: shallow-demands avoidance)
-- *Paralysis or "nothing matters"* → Offer one small, concrete, useful thing (Shadow: ambiguity + consequence trigger)
-- *Refining options instead of choosing* → "These are good enough — which one first?" (Shadow: refinement addiction)
+- *Lots of planning, little execution* → "What's the very next physical action?"
+- *Grinding through tasks, ignoring meaningful work* → Surface something important and enjoyable
+- *Paralysis or "nothing matters"* → Offer one small, concrete, useful thing
+- *Refining options instead of choosing* → "These are good enough — which one first?"
 
 One observation max. Check off-switch criteria before surfacing.
 
@@ -120,7 +120,7 @@ One observation max. Check off-switch criteria before surfacing.
 
 ## Step 10: Carried forward from Friday
 
-Check Friday's daily note `## Today's Options` for undone items (still `- [ ]`, not in `## Done Today`). If Friday's note lacks a `## Today's Options` section (pre-dashboard), fall back to `[[Today Pool]]` `## Today's Options`. Ask: "Still relevant?"
+Check Friday's daily note `## Today's Options` for undone items (still `- [ ]`, not in `## Done Today`). Ask: "Still relevant?"
 
 ---
 

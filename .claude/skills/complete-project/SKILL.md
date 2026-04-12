@@ -40,8 +40,6 @@ This prevents parent/sibling project notes from accumulating stale sub-project d
 ### 4. Clean daily note
 Read today's daily note (`obsidian daily:read vault="{{VAULT_NAME}}"`). Remove any items referencing this project from `## Today's Options`. Mention what was removed (if anything).
 
-If today's daily note doesn't have a `## Today's Options` section (pre-dashboard note), fall back to reading `[[Today Pool]]` and apply the same logic there.
-
 ### 5. Update status
 ```bash
 obsidian property:set name="status" value="completed" file="$PROJECT_NAME" vault="{{VAULT_NAME}}"

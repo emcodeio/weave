@@ -71,7 +71,7 @@ Report: "X Drafts, Y inbox notes, Z unread emails."
 - Personal project actions (search by `categories: ["[[Projects]]"]` and `status: active`)
 - `[[Action Pool]]`
 - `[[Someday Pool]]` — personal days are when someday items naturally surface
-**Carry-forward**: Read yesterday's daily note `## Today's Options` and note which items weren't completed (still `- [ ]`, not in `## Done Today`). If yesterday's note lacks a `## Today's Options` section (pre-dashboard notes), fall back to `[[Today Pool]]` `## Today's Options`. Frame casually: "A couple things from yesterday that didn't happen — still interesting?"
+**Carry-forward**: Read yesterday's daily note `## Today's Options` and note which items weren't completed (still `- [ ]`, not in `## Done Today`). Frame casually: "A couple things from yesterday that didn't happen — still interesting?"
 
 **Deadlines**: Check Apple Reminders (`mcp__apple-events__reminders_tasks`) for anything time-sensitive.
 
@@ -95,9 +95,9 @@ No work items unless the user asks.
 
 #### Personal-day stance awareness
 Watch for these patterns and respond concretely — light touch only (see `shadow-awareness` rule, Tier 1):
-- *Over-scheduling the day off* → "This is supposed to be restorative. What one thing would feel best?" (Shadow: life-management from above — designing the day instead of inhabiting it)
-- *Guilt about resting* → "Rest is productive. What sounds enjoyable?" (Shadow: relentless self-monitoring — sincerity becoming performance pressure)
-- *Can't decide / nothing appeals* → Offer one small, enjoyable thing (Shadow: unstructured openness trigger — stillness without obvious intervention)
+- *Over-scheduling the day off* → "This is supposed to be restorative. What one thing would feel best?"
+- *Guilt about resting* → "Rest is productive. What sounds enjoyable?"
+- *Can't decide / nothing appeals* → Offer one small, enjoyable thing
 
 Personal days are for ease. One gentle observation at most. If energy or mood suggest a day for rest, skip shadow observations entirely.
 

@@ -6,7 +6,7 @@ Initial public release.
 
 ### Included
 - 26 slash commands + 6 format helper skills
-- 4 specialized agents (researcher, content drafter, vault organizer, contradictions resolver)
+- 5 specialized agents (researcher, content drafter, vault organizer, contradictions resolver, system architect)
 - 13 system rules
 - 5 hooks (note quality, system protection, change logging, context compaction, git hooks)
 - 14 note templates + 25 Bases views

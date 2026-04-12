@@ -82,7 +82,7 @@ Present a high-level dashboard. For each active project:
 
 Group by area (work first, then personal). Include Action Pool standalone items as their own section.
 
-**Carry-forward**: Read yesterday's daily note `## Today's Options` and note which items weren't completed (still `- [ ]`, not in `## Done Today`). If yesterday's note lacks a `## Today's Options` section (pre-dashboard notes), fall back to `[[Today Pool]]` `## Today's Options`. Present carry-forward items inline with their parent projects rather than as a separate list.
+**Carry-forward**: Read yesterday's daily note `## Today's Options` and note which items weren't completed (still `- [ ]`, not in `## Done Today`). Present carry-forward items inline with their parent projects rather than as a separate list.
 
 This is a read-only overview — no recommendations yet. End with: **"That's the full landscape. What stands out to you?"**
 
@@ -99,10 +99,10 @@ Present a work-biased menu of suggested actions drawn from the landscape. Weight
 
 #### Stance awareness
 Watch for these patterns and respond concretely (grounded in `shadow-awareness` rule — Tier 1 only):
-- *Lots of planning, little execution* → "What's the very next physical action?" (Shadow: preemption, systems-thinking from above)
-- *Grinding through tasks, ignoring meaningful work* → Surface something important and enjoyable (Shadow: shallow-demands avoidance — fleeing into busywork)
-- *Paralysis or "nothing matters"* → Offer one small, concrete, useful thing (Shadow: ambiguity + consequence trigger → freeze)
-- *Refining options instead of choosing* → "These are good enough — which one first?" (Shadow: refinement addiction — "not yet elegant enough" as chronic threshold)
+- *Lots of planning, little execution* → "What's the very next physical action?"
+- *Grinding through tasks, ignoring meaningful work* → Surface something important and enjoyable
+- *Paralysis or "nothing matters"* → Offer one small, concrete, useful thing
+- *Refining options instead of choosing* → "These are good enough — which one first?"
 
 One observation max. If the user doesn't engage, drop it completely. Check off-switch criteria before surfacing (productive flow, low energy, already surfaced).
 
@@ -175,7 +175,7 @@ Process ONLY relevant items. Everything else waits for `/deep-review`.
 
 If yesterday's daily note exists and doesn't already have an `## Observations` section, append one with 2-3 sentences noting patterns Claude detected — energy trends, friction signals, mood patterns, or anything noteworthy from yesterday's data.
 
-**Defense pattern tracking** (Tier 2 — appropriate in Observations): If yesterday's data shows a pattern from the `shadow-awareness` rule — repeated deferral of a specific action type, refinement without shipment, planning-heavy day with low completion — note it using the Wise Feedback Structure (observation + capacity evidence). Cross-reference with prior Observations sections when the pattern spans multiple days. If a documented pattern *didn't* activate when expected (e.g., high-ambiguity day handled with ease), note the contradiction — this is highest-value data for the Defense Pattern Living Record.
+**Defense pattern tracking** (Tier 2 — appropriate in Observations): If yesterday's data shows a pattern from the `shadow-awareness` rule — repeated deferral of a specific action type, planning-heavy day with low completion, avoidance of a particular domain — note it using the Wise Feedback Structure (observation + capacity evidence). Cross-reference with prior Observations sections when the pattern spans multiple days. If a documented pattern *didn't* activate when expected (e.g., high-stakes day handled with ease), note the contradiction — this is highest-value data for the Defense Pattern Living Record.
 
 Present a brief summary:
 - Two-month horizon snapshot (written to `## Upcoming`)

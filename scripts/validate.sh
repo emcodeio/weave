@@ -30,6 +30,7 @@ printf "========================\n\n"
 printf "${BOLD}[1] Personal references${NC}\n"
 
 # Check for personal identifiers (excluding .git/ and the intentional README clone URL)
+# Note: LICENSE intentionally contains copyright holder name — not scanned here
 PERSONAL_HITS=$(grep -r --include="*.md" --include="*.json" --include="*.sh" -i \
   'cortex\|eerickson\|evan@' . \
   --exclude-dir=.git 2>/dev/null \
@@ -135,10 +136,10 @@ else
 fi
 
 AGENT_COUNT=$(find .claude/agents -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-if [[ "$AGENT_COUNT" -eq 4 ]]; then
-  check_pass "Agents: $AGENT_COUNT (expected 4)"
+if [[ "$AGENT_COUNT" -eq 5 ]]; then
+  check_pass "Agents: $AGENT_COUNT (expected 5)"
 else
-  check_fail "Agents: $AGENT_COUNT (expected 4)"
+  check_fail "Agents: $AGENT_COUNT (expected 5)"
 fi
 
 RULE_COUNT=$(find .claude/rules -name "*.md" 2>/dev/null | wc -l | tr -d ' ')

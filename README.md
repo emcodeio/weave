@@ -24,7 +24,7 @@ There is no external task manager. Projects, actions, reference material, routin
 - **Semantic search** over your entire vault via QMD (local, on-device)
 - **Apple integrations** (optional, macOS): Calendar, Reminders, Mail, Drafts
 - **Property-based organization** — areas + categories, not folder hierarchies
-- **4 specialized agents** — researcher, content drafter, vault organizer, contradiction resolver
+- **5 specialized agents** — researcher, content drafter, vault organizer, contradiction resolver, system architect
 - **Pattern recognition** — friction detection across reviews, stance awareness, optional shadow pattern tracking
 - **In-vault documentation** — guide notes that are the docs
 

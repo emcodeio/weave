@@ -48,7 +48,7 @@ Claude operates at one of three levels depending on the task. Identify the level
 - **Maximize retrieval** — Search broadly (QMD for conceptual queries, `obsidian search` for keywords, Glob/Grep for patterns) before asking the user where something is.
 - **Surface context** — Proactively pull relevant vault notes into the conversation. Don't wait to be asked.
 - **Default to Obsidian** — All notes go in this vault.
-- **Shadow awareness** — Recognize recurring defense patterns (over-architecting, refinement addiction, meta-climbing) without interpreting unless invited. See `shadow-awareness` rule for the tiered feedback protocol.
+- **Shadow awareness** — Recognize recurring defense patterns without interpreting unless invited. See `shadow-awareness` rule for the tiered feedback protocol.
 - **Proactive Linking** — Every note must have frontmatter (categories, areas, status, tags, created), related note links, and category note verification. See `operating-principles` rule for the full checklist.
 
 ---
