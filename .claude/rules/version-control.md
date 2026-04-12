@@ -12,7 +12,7 @@ git push
 ```
 
 - Use specific file adds (not `git add -A`) to avoid committing unintended files
-- Commit messages should be concise and describe *what* changed (e.g., "Archive completed project: Oscar Party")
+- Commit messages should be concise and describe *what* changed (e.g., "Archive completed project: Kitchen Renovation")
 
 ## QMD Re-indexing
 

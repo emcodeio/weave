@@ -98,3 +98,14 @@ Always provide `intent` — it is the single biggest quality lever, steering all
 ## Context Annotations
 
 Folder-level context annotations help QMD understand vault structure and improve result relevance. These are set via `qmd context add` and persist in the index.
+
+## Fallback When QMD Is Unavailable
+
+If QMD is not installed or the MCP server is not running, `mcp__qmd__*` calls will fail. When this happens:
+
+1. Fall back to `obsidian search` for keyword-based queries
+2. Use Grep for pattern matching across vault files
+3. Use Glob to find files by name patterns
+4. Note to the user that semantic search is unavailable and results may be less precise
+
+Skills should not block on QMD failure. Keyword search covers most use cases; semantic matching is an enhancement, not a requirement.

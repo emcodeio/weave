@@ -56,7 +56,7 @@ Before extracting anything, identify:
   | Design review | Technical reference, Decisions | Actions, Ideas |
   | PM/handoff | Decisions, Actions, Waiting-for | Project updates, Cross-team |
 
-- **Participants**: List all speakers. Resolve names against the key people list from the Work area note. Produce wikilinks for people who have vault notes (e.g., "Aleks" → `[[Aleks Chakarov]]`). Unknown participants stay as plain text strings. Note which speaker is the user (Evan).
+- **Participants**: List all speakers. Resolve names against the key people list from the Work area note. Produce wikilinks for people who have vault notes (e.g., "Jordan" → `[[Jordan Reeves]]`). Unknown participants stay as plain text strings. Note which speaker is the vault owner.
 
 - **Related projects**: Match meeting topics to active work projects loaded in dynamic context. Use keyword matching first; fall back to `mcp__qmd__query` with a `vec` sub-query of the meeting's key topics + `intent` "finding related work projects for this meeting" if needed. Flag the primary project and any secondary projects touched.
 
@@ -208,7 +208,6 @@ Commit all changes: "Process work transcript: [Meeting Name]"
 ## Quality Standards
 
 - **Plan first, execute on approval** — never modify vault notes until the user confirms
-- **Aleks spelling** — "Aleks" not "Alex" (Aleksandar Chakarov)
 - **Distinguish ownership** — only add user-owned actions to the system; others' actions become waiting-for items
 - **Respect nebulosity** — when content is ambiguous, flag it: "This could be a decision or just discussion — which feels right?"
 - **Match existing style** — mirror the GTD-actionable phrasing and formatting in existing project notes
