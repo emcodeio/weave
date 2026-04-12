@@ -1,0 +1,15 @@
+filters:
+  and:
+    - list(categories).contains(link("Journal"))
+    - '!file.name.contains("Template")'
+views:
+  - type: table
+    name: All
+    order:
+      - file.name
+      - energy
+      - mood
+      - created
+    sort:
+      - property: created
+        direction: DESC

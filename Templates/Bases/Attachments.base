@@ -1,0 +1,16 @@
+filters:
+  and:
+    - list(categories).contains(link("Attachments"))
+    - '!file.name.contains("Template")'
+views:
+  - type: table
+    name: All
+    order:
+      - file.name
+      - source
+      - status
+      - areas
+      - created
+    sort:
+      - property: created
+        direction: DESC

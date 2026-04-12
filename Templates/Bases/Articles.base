@@ -1,0 +1,44 @@
+filters:
+  and:
+    - list(categories).contains(link("Articles"))
+    - '!file.name.contains("Template")'
+views:
+  - type: table
+    name: All
+    order:
+      - file.name
+      - author
+      - source-type
+      - areas
+      - tags
+      - created
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: Practice
+    filters:
+      and:
+        - list(areas).contains(link("Practice"))
+    order:
+      - file.name
+      - author
+      - source-type
+      - tags
+      - created
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: By Author
+    order:
+      - file.name
+      - source-type
+      - areas
+      - created
+    groupBy:
+      property: author
+      direction: ASC
+    sort:
+      - property: created
+        direction: DESC

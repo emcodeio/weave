@@ -1,0 +1,16 @@
+filters:
+  and:
+    - list(categories).contains(link("People"))
+    - '!file.name.contains("Template")'
+views:
+  - type: table
+    name: All
+    order:
+      - file.name
+      - org
+      - status
+      - areas
+      - created
+    sort:
+      - property: file.name
+        direction: ASC

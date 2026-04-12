@@ -1,0 +1,21 @@
+# Obsidian — workspace files change constantly, are device-specific
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+
+# Obsidian trash
+.trash/
+
+# macOS
+.DS_Store
+
+# Claude Code — local/ephemeral files
+.claude/settings.local.json
+.claude/plans/
+.claude/memory/
+.claude/hooks/logs/
+.claude/agent-memory-local/
+.claude/worktrees/
+
+# Vault attachments (large binaries, synced separately)
+Attachments/

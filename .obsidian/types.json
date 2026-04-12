@@ -1,0 +1,21 @@
+{
+  "types": {
+    "areas": "multitext",
+    "categories": "multitext",
+    "topics": "multitext",
+    "people": "multitext",
+    "author": "multitext",
+    "org": "multitext",
+    "tags": "tags",
+    "status": "text",
+    "via": "text",
+    "energy": "text",
+    "mood": "text",
+    "source": "text",
+    "created": "date",
+    "date": "date",
+    "last": "date",
+    "aliases": "aliases",
+    "cssclasses": "multitext"
+  }
+}

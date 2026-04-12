@@ -1,0 +1,55 @@
+filters:
+  and:
+    - file.inFolder("Workbench")
+    - '!file.name.contains("Template")'
+views:
+  - type: table
+    name: Active
+    filters:
+      and:
+        - status == "drafting"
+    order:
+      - file.name
+      - project
+      - areas
+      - file.mtime
+    sort:
+      - property: file.mtime
+        direction: DESC
+  - type: table
+    name: Ready to Graduate
+    filters:
+      and:
+        - status == "ready"
+    order:
+      - file.name
+      - project
+      - areas
+      - created
+    sort:
+      - property: created
+        direction: ASC
+  - type: table
+    name: Paused
+    filters:
+      and:
+        - status == "paused"
+    order:
+      - file.name
+      - project
+      - areas
+      - file.mtime
+    sort:
+      - property: file.mtime
+        direction: DESC
+  - type: table
+    name: All
+    order:
+      - file.name
+      - status
+      - project
+      - areas
+      - file.mtime
+    sort:
+      - property: file.mtime
+        direction: DESC

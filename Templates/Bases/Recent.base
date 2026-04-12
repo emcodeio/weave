@@ -1,0 +1,17 @@
+filters:
+  and:
+    - file.mtime >= today() - "14d"
+    - '!file.name.contains("Template")'
+    - '!file.inFolder(".obsidian")'
+views:
+  - type: table
+    name: Recently Modified
+    order:
+      - file.name
+      - categories
+      - status
+      - file.mtime
+    sort:
+      - property: file.mtime
+        direction: DESC
+    limit: 20

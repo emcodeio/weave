@@ -1,0 +1,27 @@
+filters:
+  and:
+    - list(areas).contains(link("Creating"))
+    - '!file.name.contains("Template")'
+views:
+  - type: table
+    name: Projects
+    filters:
+      and:
+        - list(categories).contains(link("Projects"))
+    order:
+      - file.name
+      - status
+      - created
+    sort:
+      - property: file.mtime
+        direction: DESC
+  - type: table
+    name: All Notes
+    order:
+      - file.name
+      - categories
+      - status
+      - created
+    sort:
+      - property: file.mtime
+        direction: DESC
