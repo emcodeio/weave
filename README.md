@@ -108,6 +108,18 @@ During each morning startup, Claude writes an `## Observations` section in yeste
 
 Workbench notes use lighter frontmatter (just `status` and `created`) and are exempt from the system's linking and categorization requirements. When a workbench item is finished, it "graduates" to its permanent location via `/integrate-workbench`, and full proactive linking is applied at that point.
 
+### How Claude Code connects to Obsidian
+
+Claude Code interacts with your vault through several layers:
+
+**Obsidian CLI** — Built into Obsidian 1.12+, the CLI lets Claude read, create, search, and manage notes using Obsidian's search index, backlink graph, and property engine. Faster and more accurate than raw file access for vault operations. Requires Obsidian to be running — if it's not, Claude falls back to direct file tools automatically. The project ships with an `obsidian-cli` skill that encodes routing rules and safety conventions.
+
+**QMD semantic search** — A local on-device search engine combining BM25 keyword matching, vector embeddings, and LLM reranking. Installed during setup (~2GB of models downloaded on first run). Powers conceptual queries ("find notes about feeling stuck" matches a note titled "Overcoming Paralysis"), inbox routing, and friction pattern detection across reviews. No cloud dependencies — everything runs locally. The index is auto-maintained by a git post-commit hook.
+
+**Format skills** — Four reference skills (adapted from [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)) that teach Claude Obsidian-specific syntax: Obsidian Flavored Markdown (wikilinks, callouts, embeds), Bases (database views with filters and formulas), JSON Canvas (visual mind maps and flowcharts), and Defuddle (clean markdown extraction from web pages). These ship with the project and load automatically.
+
+**Apple integrations** (optional, macOS) — Calendar and Reminders provide scheduling context during reviews. Mail enables email triage (draft-only — Claude never sends directly). Drafts connects the quick-capture app as an inbox source. Each runs as an MCP server configured during setup.
+
 ## Philosophy
 
 The central insight: tasks and purposes are inherently nebulous. They resist crisp definition — energy shifts, context changes, priorities drift. Rigid systems fight this; Weave works with it.
@@ -171,6 +183,8 @@ The setup script will:
 5. Choose Apple integrations (macOS)
 6. Customize life areas
 7. Create vault structure and initial commit
+
+Obsidian settings are pre-configured — daily notes point to `Daily/` with the included template, attachments save to `Attachments/`, and core plugins (Daily Notes, Templates, Properties, Bases) are already enabled. No manual Obsidian configuration needed.
 
 Then open the folder as a vault in Obsidian and start Claude Code in the same directory.
 
