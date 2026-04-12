@@ -16,20 +16,6 @@ views:
       - property: created
         direction: DESC
   - type: table
-    name: Practice
-    filters:
-      and:
-        - list(areas).contains(link("Practice"))
-    order:
-      - file.name
-      - author
-      - source-type
-      - tags
-      - created
-    sort:
-      - property: created
-        direction: DESC
-  - type: table
     name: By Author
     order:
       - file.name

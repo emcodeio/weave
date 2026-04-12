@@ -34,7 +34,7 @@ All notes should include YAML frontmatter:
 ---
 categories: ["[[CategoryName]]"]   # What kind of note — wikilinks to category notes (e.g., Projects, Research, Books)
 status: active | someday | waiting | completed
-areas: ["[[AreaName]]"]            # Whose responsibility — wikilinks to area notes (e.g., Work, Home, Practice)
+areas: ["[[AreaName]]"]            # Whose responsibility — wikilinks to area notes (e.g., Work, Home, Personal)
 tags: []
 created: YYYY-MM-DD
 ---
@@ -66,5 +66,5 @@ created: YYYY-MM-DD
 - **Area notes** (`Notes/`): Living documents for ongoing life areas with embedded Bases views. Updated as circumstances change.
 - **Category notes** (`Notes/`): Navigation hubs tagged `categories` with embedded Base views. One per category (e.g., `Projects.md`, `Books.md`).
 - **Reference notes** (`References/`): External entities — books, people, places, companies. Categorized via `categories` (e.g., `["[[Books]]"]`, `["[[People]]"]`).
-- **Practice session notes** (`Notes/`): `categories: ["[[Practice Sessions]]"]`. Records of facilitated practice sessions. Generic sessions use `Templates/Template - Practice Session.md`. Practices with a `## Session Capture` section (e.g., Core Transformation) use practice-specific templates with richer structure.
+- **Session notes** (`Notes/`): Records of facilitated sessions (coaching, meditation, workshops, etc.). Created via `/create-from-template`.
 - **Wrapper notes**: Markdown companion for a non-markdown file in `Attachments/`. Contains frontmatter (including `source` property), an embed (`![[filename]]`), and a `## Summary` section Claude fills during inbox processing. Lives in `Notes/` or `References/` depending on origin.

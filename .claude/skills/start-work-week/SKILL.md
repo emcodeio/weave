@@ -141,7 +141,7 @@ If today's daily note was created before the dashboard template and lacks these 
 ### Quick
 - [ ] Action text — [[Source]]
 ```
-Group items by their source project's area (Work, Home, Personal, Practice, etc.). Lightweight or standalone items go under **Quick**. Omit empty groups. Only items the user confirmed. One checkbox per action. 5-8 options weighted by enjoyable usefulness and week-level awareness (Rule of 3 outcomes, front-loaded priorities).
+Group items by their source project's area (Work, Home, Personal, Health, etc.). Lightweight or standalone items go under **Quick**. Omit empty groups. Only items the user confirmed. One checkbox per action. 5-8 options weighted by enjoyable usefulness and week-level awareness (Rule of 3 outcomes, front-loaded priorities).
 
 **`## Routines`** — Convert Monday + Daily items from `[[Day-Specific Routines]]` (read in Step 7) to checkboxes:
 ```

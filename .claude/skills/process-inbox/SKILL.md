@@ -36,12 +36,12 @@ Apply heuristics in order (first match wins):
 
 | Signal | Type | Routing |
 |--------|------|---------|
-| File >50k chars + book metadata (`author` + `title` + `publisher`/`contributor`) | Book | References/, flag `/ingest-book` |
+| File >50k chars + book metadata (`author` + `title` + `publisher`/`contributor`) | Book | References/ with `categories: ["[[Books]]"]` |
 | `type: capture` + LLM conversation markers (role alternation, claude.ai/chatgpt links, `## Prompt:`/`## Response:`) | LLM conversation | Rename descriptively, Notes/, flag `/process-llm-conversation` |
-| Course/transcript indicators + dialogue structure | Course transcript | Flag `/process-course-transcript` |
-| Structured teaching material, handout/worksheet indicators | Course handout | Flag `/process-course-handout` |
-| Coaching session indicators (Charlie, practice coaching) | Coaching transcript | Flag `/process-coaching-transcript` |
-| Meetup/group discussion transcript indicators | Meetup transcript | Flag `/process-meetup-transcript` |
+| Course/transcript indicators + dialogue structure | Course transcript | Flag `/process-transcript` |
+| Structured teaching material, handout/worksheet indicators | Course handout | Flag `/process-transcript` |
+| Coaching session indicators (1:1 session structure, coaching language) | Coaching transcript | Flag `/process-transcript` |
+| Meetup/group discussion transcript indicators | Group transcript | Flag `/process-transcript` |
 | `tags: [clippings]` + full body (>500 chars after frontmatter) | Article (full content) | Flag `/ingest-written-content` |
 | `tags: [clippings]` + minimal body OR body is a single URL | URL stub | Fetch & classify, or file as reference |
 | Filename matches `Name (@handle)` + minimal body | Person stub | References/ as Person note |

@@ -67,7 +67,7 @@ Gather a casual overview — no decisions yet, just awareness.
 Report: "X Drafts, Y inbox notes, Z unread emails."
 
 **Light scan** — read through these casually, no structured dashboard:
-- Leisure collection notes (`Reading`, `Wishlist`) from `Notes/`
+- Leisure collection notes from `Notes/` (search for notes tagged `collection`)
 - Personal project actions (search by `categories: ["[[Projects]]"]` and `status: active`)
 - `[[Action Pool]]`
 - `[[Someday Pool]]` — personal days are when someday items naturally surface
@@ -127,7 +127,7 @@ If today's daily note was created before the dashboard template and lacks these 
 ### Quick
 - [ ] Action text — [[Source]]
 ```
-Group items by their source project's area (Home, Personal, Relationships, Practice, etc.). Lightweight or standalone items go under **Quick**. Omit empty groups. Only items the user confirmed in Step 7. One checkbox per action. 3-5 items including leisure options.
+Group items by their source project's area (Home, Personal, Relationships, Health, etc.). Lightweight or standalone items go under **Quick**. Omit empty groups. Only items the user confirmed in Step 7. One checkbox per action. 3-5 items including leisure options.
 
 **`## Routines`** — Convert today's items from `[[Day-Specific Routines]]` (read in Step 4) to checkboxes:
 ```

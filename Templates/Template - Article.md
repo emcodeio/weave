@@ -15,7 +15,7 @@ created: {{date:YYYY-MM-DD}}
 
 ## Key Concepts
 
-## Practice Relevance
+## Personal Relevance
 
 ## Quotes
 

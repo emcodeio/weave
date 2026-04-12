@@ -94,7 +94,7 @@ Used for articles, blog posts, and other written content analyzed and integrated
 | `source-url` | string | URL of original content |
 | `source-type` | string | article, substack, substack-note, blog-post, book-chapter, essay-by-other |
 
-Placement: `References/` — articles are external content regardless of integration depth. Concept notes and practice notes extracted during ingestion go in `Notes/`.
+Placement: `References/` — articles are external content regardless of integration depth. Concept notes extracted during ingestion go in `Notes/`.
 
 ## Conversation Extension
 
