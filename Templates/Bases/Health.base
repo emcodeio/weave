@@ -1,6 +1,6 @@
 filters:
   and:
-    - list(areas).contains(link("Health & Body"))
+    - list(areas).contains(link("Health"))
     - '!file.name.contains("Template")'
 views:
   - type: table

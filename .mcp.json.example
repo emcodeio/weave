@@ -1,0 +1,40 @@
+{
+  "_readme": "Copy this file to .mcp.json and keep only the servers you need. QMD is required. Apple integrations are macOS-only. setup.sh generates this automatically.",
+  "mcpServers": {
+    "_qmd": "REQUIRED — Local semantic search over vault markdown. Install: npm install -g @tobilu/qmd",
+    "qmd": {
+      "type": "stdio",
+      "command": "qmd",
+      "args": ["mcp"],
+      "env": {}
+    },
+    "_apple-events": "OPTIONAL (macOS) — Apple Calendar + Reminders. Calendar for scheduling context during reviews, Reminders for hard-deadline alerts only.",
+    "apple-events": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-server-apple-events"],
+      "env": {}
+    },
+    "_mail": "OPTIONAL (macOS) — Fast Apple Mail read/search via FTS5-indexed server. Install: pipx install apple-mail-mcp",
+    "mail": {
+      "type": "stdio",
+      "command": "apple-mail-mcp",
+      "args": ["--watch"],
+      "env": {}
+    },
+    "_apple-mail": "OPTIONAL (macOS) — Apple Mail write operations (draft, reply, forward, flag, move). Always pair with 'mail' server above. Safety: creates drafts only, never sends directly.",
+    "apple-mail": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "apple-mail-mcp"],
+      "env": {}
+    },
+    "_drafts": "OPTIONAL (macOS) — Drafts app capture layer. Quick text capture from anywhere. Requires Drafts v50.0.3+ on macOS.",
+    "drafts": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@agiletortoise/drafts-mcp-server"],
+      "env": {}
+    }
+  }
+}
