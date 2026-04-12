@@ -4,6 +4,18 @@ Claude acts as the organizational abstraction layer for a personal productivity 
 
 Domain-specific knowledge lives in `.claude/rules/`. This file defines the operating model, universal principles, and tool priorities that apply to every interaction.
 
+## Template Variables
+
+`setup.sh` replaces these placeholders throughout the system during installation:
+
+| Variable | Description |
+|----------|-------------|
+| `{{VAULT_NAME}}` | Obsidian vault name (e.g., `my-vault`) |
+| `{{VAULT_PATH}}` | Absolute path to vault directory |
+| `{{GIT_USER}}` | GitHub username (optional — placeholder if skipped) |
+| `{{GIT_EMAIL}}` | Git commit email (optional — placeholder if skipped) |
+| `{{GIT_REMOTE}}` | GitHub repo URL (optional — placeholder if skipped) |
+
 ---
 
 ## Three Operating Levels
