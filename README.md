@@ -208,6 +208,7 @@ All documentation lives inside the vault as notes:
 |-------|---------------|
 | **Getting Started** | Philosophy, first three skills, what to expect |
 | **System Overview** | Three levels, vault structure, review rhythm, integrations |
+| **System Components by Role** | Complete inventory of skills, agents, rules, and hooks by operating level |
 | **Customizing Your System** | Areas, categories, reviews, templates, shadow awareness |
 | **Your First Review** | Annotated walkthrough of `/start-workday` |
 | **Setting Up Integrations** | QMD, Calendar, Mail, Drafts setup and troubleshooting |

@@ -42,4 +42,5 @@ Hard deadlines ("return item by March 5") need time-triggered alerts that interr
 ## Links
 
 - [[Weave - Chapman Framework]]
+- [[System Components by Role]]
 - [[Self-Management]]

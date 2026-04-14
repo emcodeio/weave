@@ -145,4 +145,5 @@ For the full framework, see [[Weave - Chapman Framework]] and [[Weave - System D
 - [[Setting Up Integrations]] — Per-integration setup
 - [[Weave - Chapman Framework]] — Philosophical foundation
 - [[Weave - System Design Notes]] — Concept-to-implementation mapping
+- [[System Components by Role]] — Full inventory of skills, agents, rules, and hooks
 - [[Note Schemas]] — Frontmatter reference

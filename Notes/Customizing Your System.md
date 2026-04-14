@@ -125,4 +125,5 @@ Use `/system-review` to evaluate overall system health and identify gaps or fric
 - [[System Overview]] — Architecture and components
 - [[Setting Up Integrations]] — Adding or configuring integrations
 - [[Note Schemas]] — Frontmatter reference for all note types
+- [[System Components by Role]] — Full component inventory by operating level
 - [[Day-Specific Routines]] — Recurring items by day of week
