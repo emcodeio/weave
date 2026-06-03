@@ -110,4 +110,6 @@ Detailed instructions live in `.claude/rules/`:
 | `drafts` | Drafts MCP tool routing, safety rules, review integration |
 | `qmd` | QMD semantic search: tool routing, search strategy, index maintenance |
 | `shadow-awareness` | Shadow pattern recognition, three-tier feedback protocol, off-switch criteria |
+| `concept-craft` | Chapman-aligned stance for dialogic/conceptual work: reasonableness, nebulosity, purpose-sensitivity, concept card schema, anti-sycophancy and anti-refinement-addiction guardrails |
+| `concept-forge-artifact-format` | Workbench artifact spec consumed by /concept-forge and /integrate-concept-forge (path-scoped to `Workbench/concept-forge/`) |
 | `workbench` | Workbench folder: purpose, frontmatter, graduation, review integration |
