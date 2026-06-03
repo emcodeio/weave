@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# SessionStart hook (compact matcher): surfaces dynamic context after compaction
-# CLAUDE.md is automatically re-read, so this only injects dynamic state
+# SessionStart hook (startup|resume|compact): surfaces dynamic git/vault state at session start
+# CLAUDE.md is automatically (re-)read, so this only injects dynamic state (uncommitted changes,
+# recent change-log, QMD-hook health)
 
 set -euo pipefail
 

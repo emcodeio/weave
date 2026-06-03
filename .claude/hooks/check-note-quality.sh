@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# PostToolUse hook: verifies frontmatter on vault notes after Edit/Write
-# Uses "decision":"warn" — PostToolUse feedback signal. The write has already
-# completed; Claude receives the reason and corrects the issue.
+# PostToolUse hook: verifies frontmatter on vault notes after Edit/Write.
+# Emits hookSpecificOutput.additionalContext (current PostToolUse output shape) so Claude
+# sees the warning and can correct it; the write itself already completed (non-blocking).
 # Checks notes in: Notes/, References/
 # Skips: Inbox/, Daily/, Templates/, Attachments/, and non-vault files
 
@@ -14,11 +14,19 @@ if [[ -z "$FILE_PATH" ]]; then
   exit 0
 fi
 
-# Normalize path
+# Emit a non-blocking warning to Claude via the current PostToolUse output shape, then exit.
+emit_warning() {
+  local escaped
+  escaped=$(printf '%s' "$1" | jq -Rs '.')
+  printf '{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":%s}}' "$escaped"
+  exit 0
+}
+
+# Normalize path (quote VAULT_DIR so the prefix strip is literal even with spaces in the path)
 FILE_PATH="${FILE_PATH#./}"
 VAULT_DIR="${CLAUDE_PROJECT_DIR:-}"
 if [[ -n "$VAULT_DIR" && "$FILE_PATH" == "$VAULT_DIR"/* ]]; then
-  FILE_PATH="${FILE_PATH#$VAULT_DIR/}"
+  FILE_PATH="${FILE_PATH#"$VAULT_DIR"/}"
 fi
 
 # Only check .md files
@@ -51,8 +59,7 @@ CONTENT=$(cat "$ABS_PATH")
 
 # Check for YAML frontmatter delimiters
 if [[ "$CONTENT" != ---* ]]; then
-  echo '{"decision":"warn","reason":"Missing YAML frontmatter. Notes in structured directories must start with --- delimiters and include categories, areas, status, tags, and created fields."}'
-  exit 0
+  emit_warning "Missing YAML frontmatter in ${FILE_PATH}. Notes in structured directories must start with --- delimiters and include categories, areas, status, tags, and created fields."
 fi
 
 # Extract frontmatter (between first and second ---)
@@ -61,8 +68,7 @@ if [[ -z "$FRONTMATTER" ]]; then
   # Check if there's a closing ---
   SECOND_DELIM=$(echo "$CONTENT" | sed -n '2,${/^---$/=;}'| head -1)
   if [[ -z "$SECOND_DELIM" ]]; then
-    echo '{"decision":"warn","reason":"Malformed YAML frontmatter — missing closing --- delimiter."}'
-    exit 0
+    emit_warning "Malformed YAML frontmatter in ${FILE_PATH} — missing closing --- delimiter."
   fi
 fi
 
@@ -76,8 +82,7 @@ done
 
 if [[ ${#MISSING[@]} -gt 0 ]]; then
   MISSING_STR=$(IFS=', '; echo "${MISSING[*]}")
-  echo "{\"decision\":\"warn\",\"reason\":\"Frontmatter missing required fields: ${MISSING_STR}. All structured vault notes need categories, areas, status, tags, and created.\"}"
-  exit 0
+  emit_warning "Frontmatter in ${FILE_PATH} missing required fields: ${MISSING_STR}. All structured vault notes need categories, areas, status, tags, and created."
 fi
 
 exit 0

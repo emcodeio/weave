@@ -15,11 +15,21 @@ fi
 # Normalize: strip leading ./ if present
 FILE_PATH="${FILE_PATH#./}"
 
-# Also handle absolute paths by stripping the vault prefix
+# Also handle absolute paths by stripping the vault prefix (quote VAULT_DIR so the strip is literal even with spaces)
 VAULT_DIR="${CLAUDE_PROJECT_DIR:-}"
 if [[ -n "$VAULT_DIR" && "$FILE_PATH" == "$VAULT_DIR"/* ]]; then
-  FILE_PATH="${FILE_PATH#$VAULT_DIR/}"
+  FILE_PATH="${FILE_PATH#"$VAULT_DIR"/}"
 fi
+
+# Path-traversal guard: a ".." segment can resolve INTO a protected dir without matching the
+# literal prefixes below (e.g. .claude/skills/x/../obsidian-cli/...). Surface any such path to
+# the user rather than letting it silently bypass protection — legitimate vault edits never use "..".
+case "/$FILE_PATH/" in
+  */../*)
+    echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"Path contains a \"..\" segment (possible traversal). Re-issue with a direct, normalized path so the protected-files guard can evaluate it."}}'
+    exit 0
+    ;;
+esac
 
 case "$FILE_PATH" in
   .obsidian/*)
