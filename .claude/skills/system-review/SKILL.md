@@ -1,6 +1,6 @@
 ---
 name: system-review
-description: "Review system health: evaluate skills, agents, hooks, and rules for gaps, friction, or improvement opportunities. Use when the user says 'system review', 'how is the system', 'evaluate the system', or 'what needs improving'."
+description: "Audit the .claude/ system — skills, agents, hooks, rules — for drift, staleness, duplication, gaps, and friction. Use when the user wants a system review or health check, asks 'how is the system / what needs improving', after a batch of system changes that should be sanity-checked, or when something feels stale, duplicated, or out of sync."
 context: fork
 agent: system-architect
 ---
@@ -29,7 +29,7 @@ Follow this workflow:
 
 1. **Inventory check** — Read CLAUDE.md and all rules files. Verify:
    - Content accuracy (do descriptions match reality?)
-   - Line counts (CLAUDE.md < 140, each rule < 100)
+   - Line counts: CLAUDE.md < 140. For rules, flag a file only if it is *both* long *and* duplicative/unfocused — a long but single-purpose spec (e.g., `concept-forge-artifact-format`) is not a defect. The test is duplication and scope-creep, not raw length.
    - Rules table in CLAUDE.md matches actual files in `.claude/rules/`
    - No stale references to removed or renamed components
 
@@ -44,22 +44,33 @@ Follow this workflow:
    - Protect hook covers all paths that should be protected
    - No unused or orphaned hooks
 
-4. **Friction & gap analysis** — Compare against your memory of past reviews:
+4. **Protected-skill currency** — Run `.claude/hooks/check-protected-skills.sh` to diff
+   the vendored kepano plugin skills (obsidian-cli/markdown/bases/canvas, defuddle) against
+   `kepano/obsidian-skills@main`. Do NOT trust the plugin version field — upstream ships
+   content changes without bumping it (it has sat at 1.0.1 across multiple commits), so a
+   marketplace update check misses drift; the file-level diff is authoritative. If the script
+   reports `DIFFERENT` or `LOCAL-ONLY`, rerun with `--diff` for specifics and report it as a
+   finding. Syncing is a user-authorized step, not automatic: these files are guarded by the
+   protect hook (Edit/Write blocked), so a sync is a deliberate Bash copy of the verified
+   upstream content after the user confirms — and includes any matching tooling change (e.g.
+   the npm package an install line names).
+
+5. **Friction & gap analysis** — Compare against your memory of past reviews:
    - What patterns keep causing friction?
    - What capabilities are missing?
    - Any duplication or conflicts between components?
    - Are there user workflows that lack system support?
 
-5. **Integration health** — Verify MCP and tool references:
+6. **Integration health** — Verify MCP and tool references:
    - CLAUDE.md MCP priority list matches system-architecture rule
    - Tool references in skills/agents are current
    - No references to deprecated or removed integrations
 
 ## Output
 
-Return a structured assessment:
-- **Inventory** — Current counts of all system components
-- **Issues** — Problems found, grouped by severity (critical / moderate / minor)
-- **Improvements** — Prioritized suggestions for system enhancements
-- **Comparison** — How this review compares to previous ones (from memory)
-- **Next actions** — Specific follow-up items if any issues need fixing
+Return a structured assessment — findings surfaced as options for the user to choose from, never as a mandate to fix:
+- **Inventory** — current counts of all system components
+- **Issues** — problems found, grouped by severity (critical / moderate / minor)
+- **Improvements** — enhancement suggestions, framed as options the user can pick up or set aside
+- **Comparison** — how this review compares to previous ones (from memory)
+- **Next actions** — concrete follow-ups the user *could* take, ordered by leverage; the user decides what, if anything, to act on

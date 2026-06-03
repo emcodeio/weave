@@ -26,6 +26,10 @@ Create a new vault note of type "$ARGUMENTS" using the template library.
 | daily | `[[Journal]]` | `Daily/` | energy, mood |
 | category | (meta) | `Notes/` | tags: [categories] |
 
+Three pieces work together per note type: the **template file** (in `Templates/`), a **`.base`** (the saved Obsidian view that lists notes of that type), and a **category note** (the hub that embeds that base). `/create-template` defines this "Trinity" in full; this skill consumes it — the terms recur in Steps 2b and 4.
+
+Routing exceptions (project / daily / category) are handled in Step 1.
+
 ## Steps
 
 ### 1. Identify template and note name
@@ -80,7 +84,7 @@ Category notes are minimal and follow a fixed pattern:
 
 ### 3. Create the note
 
-Read [[Note Schemas]] for the current frontmatter schema. For design history and composability rules, see [[Vault Reorganization - Template Library Design]]. Construct the note content.
+Read [[Note Schemas]] for the current frontmatter schema. Construct the note content.
 
 Use Obsidian CLI to create:
 ```bash
