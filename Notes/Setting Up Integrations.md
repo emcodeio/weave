@@ -8,13 +8,13 @@ created: 2026-04-11
 
 # Setting Up Integrations
 
-Weave connects to external tools through MCP (Model Context Protocol) servers. QMD is required; everything else is optional. The `setup.sh` script configures these automatically, but this guide covers manual setup and troubleshooting.
+Weave connects to external tools through MCP (Model Context Protocol) servers. QMD is strongly recommended; everything else is optional. The `setup.sh` script offers to install QMD (and the Apple Mail read server) and writes your `.mcp.json` automatically — this guide covers manual setup and troubleshooting.
 
 Configuration lives in `.mcp.json` at the vault root. See `.mcp.json.example` for a documented reference of all available servers.
 
 ---
 
-## QMD Semantic Search — Required
+## QMD Semantic Search — Strongly Recommended
 
 ### Why
 
@@ -104,7 +104,7 @@ During reviews, Claude can scan unread email for actionable items and surface th
 
 ### Install
 
-Two MCP servers work together:
+Two MCP servers work together — note these are two *different* packages that happen to share the name `apple-mail-mcp`: the read server is a Python tool installed with `pipx`, the write server a Node tool run with `npx`.
 
 **Read server** (fast, FTS5-indexed):
 ```bash

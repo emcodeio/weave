@@ -1,7 +1,7 @@
 {
-  "_readme": "Copy this file to .mcp.json and keep only the servers you need. QMD is required. Apple integrations are macOS-only. setup.sh generates this automatically.",
+  "_readme": "Copy this file to .mcp.json and keep only the servers you need. QMD is strongly recommended. Apple integrations are macOS-only. setup.sh generates this automatically.",
   "mcpServers": {
-    "_qmd": "REQUIRED — Local semantic search over vault markdown. Install: npm install -g @tobilu/qmd",
+    "_qmd": "STRONGLY RECOMMENDED — Local semantic search over vault markdown. Install: npm install -g @tobilu/qmd",
     "qmd": {
       "type": "stdio",
       "command": "qmd",

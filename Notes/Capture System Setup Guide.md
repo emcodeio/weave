@@ -10,6 +10,8 @@ created: 2026-03-04
 
 Implementation plan for a universal capture system that sends everything to the Obsidian `Inbox/` with minimal friction. Non-markdown files (PDFs, images, etc.) go to `Attachments/` with a wrapper note in `Inbox/`.
 
+> **Optional / advanced — you don't need any of this to start.** The **Drafts** text-capture setup (Part 1 below) is quick and covers everyday capture. The **Keyboard Maestro** contextual macros (Parts 2–4) are a power-user add-on for browser/Mail/Finder capture — set them up later, only if you want them (Keyboard Maestro is a paid macOS app).
+
 ---
 
 ## Architecture Overview
@@ -32,7 +34,7 @@ Drafts captures live in the Drafts inbox until processed. During daily review, C
 
 - [ ] Create `Attachments/` folder in vault
 - [ ] In Obsidian > Settings > Files & Links > Default location for new attachments, set to "In the folder specified below" and enter `Attachments`
-- [ ] Add `Attachments/` to `.gitignore` (large binaries shouldn't bloat the git repo -- iCloud handles sync)
+- [ ] Add `Attachments/` to `.gitignore` (large binaries shouldn't bloat the git repo -- your sync method handles them)
 - [ ] Ensure Drafts app is installed on iPhone and Mac
 - [ ] Ensure Keyboard Maestro is installed on Mac
 
@@ -68,10 +70,10 @@ created: [[date|%Y-%m-%d]]
 1. In Drafts > Settings > Storage > Bookmarks
 2. Tap **+** > **Pick Folder**
 3. Name it `Obsidian Inbox`
-4. Navigate in the Files picker to: **iCloud Drive > Obsidian > {{VAULT_NAME}} > Inbox**
+4. Navigate in the Files picker to your vault's `Inbox/` folder (wherever your vault is stored — the Files picker shows your on-device and cloud-synced locations)
 5. Tap Done
 
-> **Note:** Bookmarks are device-specific. You'll need to set this up on each device (iPhone, Mac) independently. The action itself syncs via iCloud, but the folder permission does not.
+> **Note:** Bookmarks are device-specific. You'll need to set this up on each device (iPhone, Mac) independently. The Drafts action itself syncs across your devices, but the folder permission does not.
 
 ### Step 3: Create the iOS Shortcut
 
@@ -516,7 +518,7 @@ During daily inbox review, Claude processes captured items:
 ### One-time Setup
 - [ ] Create `Attachments/` folder and configure Obsidian attachment settings
 - [ ] Add `Attachments/` to `.gitignore`
-- [ ] Set up Drafts iCloud bookmark pointing to `Inbox/` (on each device)
+- [ ] Set up a Drafts bookmark pointing to `Inbox/` (on each device)
 - [ ] Install/customize the Drafts "Save in Obsidian Vault" action
 - [ ] Create the iOS Shortcut for share sheet capture
 
