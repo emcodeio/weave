@@ -21,13 +21,15 @@ There is no external task manager. Projects, actions, reference material, routin
 
 ## What you get
 
-- **32 slash commands** for daily reviews, project management, research, writing, and system design
+- **29 slash commands** for daily reviews, project management, research, writing, and system design — plus 6 format/helper skills (35 skills total)
 - **7 review sessions** — from 5-minute shutdowns to 30-minute deep reviews
 - **Semantic search** over your entire vault via QMD (local, on-device)
 - **Apple integrations** (optional, macOS): Calendar, Reminders, Mail, Drafts
 - **Property-based organization** — areas + categories, not folder hierarchies
 - **5 specialized agents** — researcher, content drafter, vault organizer, contradiction resolver, system architect
 - **Pattern recognition** — friction detection across reviews, stance awareness, optional shadow pattern tracking
+- **Concept development** — `/concept-forge` runs a dialogic, Chapman-aligned session to develop and refine an idea, then graduates it into linked concept notes
+- **Knowledge ingestion** — pull books, articles, transcripts (work or generic, auto-detected), and AI conversations into linked vault notes
 - **In-vault documentation** — guide notes that are the docs
 
 ## How it works
@@ -58,7 +60,7 @@ When you're collaborating on substantive work — research, writing, exploration
 
 > "Help me research solar options" / "Let's draft the handoff guide" / "Open the spec and let's work on it"
 
-Key skills: `/research-topic`, `/draft-content`, `/open-workbench`, `/create-project`
+Key skills: `/research-topic`, `/draft-content`, `/concept-forge`, `/ingest-book`, `/open-workbench`, `/create-project`
 
 ### Vault structure
 
@@ -116,7 +118,7 @@ Claude Code interacts with your vault through several layers:
 
 **QMD semantic search** — A local on-device search engine combining BM25 keyword matching, vector embeddings, and LLM reranking. Installed during setup (~2GB of models downloaded on first run). Powers conceptual queries ("find notes about feeling stuck" matches a note titled "Overcoming Paralysis"), inbox routing, and friction pattern detection across reviews. No cloud dependencies — everything runs locally. The index is auto-maintained by a git post-commit hook.
 
-**Format skills** — Four reference skills (adapted from [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)) that teach Claude Obsidian-specific syntax: Obsidian Flavored Markdown (wikilinks, callouts, embeds), Bases (database views with filters and formulas), JSON Canvas (visual mind maps and flowcharts), and Defuddle (clean markdown extraction from web pages). These ship with the project and load automatically.
+**Format and helper skills** — Six reference skills that teach Claude the syntax and tooling the vault relies on. Four are adapted from [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills): Obsidian Flavored Markdown (wikilinks, callouts, embeds), Bases (database views with filters and formulas), JSON Canvas (visual mind maps and flowcharts), and Defuddle (clean markdown extraction from web pages). Two more cover vault and file access: the `obsidian-cli` skill described above, and `pdf-reader` (structured markdown extraction from PDFs). These ship with the project and load automatically.
 
 **Apple integrations** (optional, macOS) — Calendar and Reminders provide scheduling context during reviews. Mail enables email triage (draft-only — Claude never sends directly). Drafts connects the quick-capture app as an inbox source. Each runs as an MCP server configured during setup.
 
@@ -125,6 +127,8 @@ Claude Code interacts with your vault through several layers:
 The central insight: tasks and purposes are inherently nebulous. They resist crisp definition — energy shifts, context changes, priorities drift. Rigid systems fight this; Weave works with it.
 
 [Meta-rationality](https://metarationality.com/introduction) means using formal systems (categories, reviews, action menus) while recognizing they're always approximations. The system holds structure lightly — categories are provisional, routines adapt, and the orienting question is always "What does this situation need?" rather than "What does the system prescribe?"
+
+The same stance extends to ideas themselves. `/concept-forge` is a dialogic space for developing and refining a concept — holding it lightly, keeping it "true enough for its purpose" rather than forcing false precision — and `/integrate-concept-forge` graduates the result into linked notes.
 
 ### Action menus, not queues
 
@@ -162,10 +166,13 @@ Based on David Chapman's work on [meta-rationality](https://metarationality.com/
 |------------|---------|-------|
 | [Obsidian](https://obsidian.md) | 1.12+ | Bases support required |
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | Latest | Pro plan or API key |
-| [Node.js](https://nodejs.org) | 18+ | For MCP servers and QMD |
-| [QMD](https://github.com/tobilu/qmd) | Latest | Local semantic search (~2GB models) |
+| [Node.js](https://nodejs.org) | 18+ | Required — powers QMD and the MCP integrations |
+| [git](https://git-scm.com) | Any recent | Required — your vault is version-controlled |
+| [QMD](https://github.com/tobilu/qmd) | Latest | Optional but strongly recommended — local semantic search (~2GB models); `setup.sh` can install it |
 
 **Recommended:** macOS for Apple integrations (Calendar, Reminders, Mail, Drafts). Core system works cross-platform.
+
+`setup.sh` checks for Node.js and git up front and stops with install instructions if either is missing — so a fresh machine just needs Node.js, git, Obsidian, and Claude Code before you start.
 
 ## Installation
 
@@ -175,16 +182,19 @@ cd my-vault
 bash setup.sh
 ```
 
-The setup script will:
-1. Check prerequisites
-2. Configure vault name and path
-3. Set up git identity (optional)
-4. Install and initialize QMD semantic search
-5. Choose Apple integrations (macOS)
-6. Customize life areas
-7. Create vault structure and initial commit
+The setup script walks you through it — and **stops with clear instructions if a required tool (Node.js or git) is missing** rather than failing later:
 
-Obsidian settings are pre-configured — daily notes point to `Daily/` with the included template, attachments save to `Attachments/`, and core plugins (Daily Notes, Templates, Properties, Bases) are already enabled. No manual Obsidian configuration needed.
+1. Checks prerequisites
+2. Sets your vault name and path
+3. Configures git (optional)
+4. Sets up QMD semantic search — with your confirmation (first run downloads ~2GB of models)
+5. Lets you choose Apple integrations (macOS) — and offers to install the Apple Mail read server (`pipx install apple-mail-mcp`) if you pick Mail
+6. Customizes your life areas
+7. Personalizes the template, generates `.mcp.json`, creates your vault structure, installs the search-index git hook, and makes the first commit
+
+When it finishes, it prints a short checklist of anything left to do for the options you chose (e.g. launching Drafts, installing `gh` to push).
+
+The vault ships with Obsidian settings pre-configured in its `.obsidian/` folder — daily notes point to `Daily/` with the included template, attachments save to `Attachments/`, and the core plugins (Daily Notes, Templates, Properties, Bases) are enabled. When you open the folder as a vault, Obsidian loads this automatically — no manual configuration needed.
 
 Then open the folder as a vault in Obsidian and start Claude Code in the same directory.
 
@@ -212,6 +222,10 @@ All documentation lives inside the vault as notes:
 | **Customizing Your System** | Areas, categories, reviews, templates, shadow awareness |
 | **Your First Review** | Annotated walkthrough of `/start-workday` |
 | **Setting Up Integrations** | QMD, Calendar, Mail, Drafts setup and troubleshooting |
+| **Capture System Setup Guide** | Quick-capture into the inbox — Drafts, share sheet, and contextual capture |
+| **Note Schemas** | Frontmatter schema reference for every note type |
+| **Weave - Chapman Framework** | The meta-rationality foundation the system is built on |
+| **Weave - System Design Notes** | Design rationale — why the system works the way it does |
 
 ## License
 
