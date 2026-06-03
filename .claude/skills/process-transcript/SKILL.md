@@ -1,12 +1,18 @@
 ---
 name: process-transcript
-description: "Analyze a transcript and produce an integration plan for the Weave system. Extracts action items, reference material, project context, decisions, and insights -- then presents a structured plan for user approval before making any vault changes. Use when the user says 'process transcript', 'analyze transcript', 'process this meeting', 'what came out of this meeting', or 'extract from transcript'."
+description: "Single entry point for processing any transcript — work meetings or generic recordings. Detects the frame (generic/work), loads the matching domain profile, and produces an integration plan for approval before any vault changes. Use when the user mentions processing a transcript, meeting recording, work meeting, or extracting from a recording (e.g. 'process transcript', 'process this meeting', 'process work meeting', 'what came out of this meeting', 'extract from a recording')."
 argument-hint: "[transcript note name or path]"
 ---
 
 # Process Transcript
 
 Analyze the transcript referenced in "$ARGUMENTS" and produce a structured integration plan. Never make vault changes without user approval.
+
+This is the single transcript processor. It runs a shared spine and, after detecting the frame (Step 2), loads at most one domain profile:
+- **Work** meetings → also read `references/work-profile.md`
+- **Generic** → use the inline taxonomy below; load no profile
+
+Run inline (interactive). Multi-participant transcripts require live attribution decisions, so this is never forked.
 
 ## Dynamic Context
 
@@ -28,49 +34,54 @@ Parse "$ARGUMENTS" to find the transcript. Try in order:
 2. `obsidian read path="$ARGUMENTS" vault="{{VAULT_NAME}}"` (path)
 3. `obsidian search query="$ARGUMENTS" vault="{{VAULT_NAME}}"` (search)
 
-If not found, ask the user for clarification. Read the full transcript -- analysis requires complete context.
+If not found, ask the user for clarification. Read the full transcript — analysis requires complete context.
 
-## Step 2: Establish the frame
+## Step 2: Detect the frame, then establish it
 
-Before extracting anything, identify:
-- **Meeting type**: work meeting, coaching, practice session, class, 1:1, group discussion
-- **Participants**: who was present (note which statements are the user's)
-- **Related projects/areas**: scan active projects list for keyword matches. If meeting language doesn't obviously match project names (e.g., "kitchen remodel" vs. "Kitchen Renovation Plan"), also use `mcp__qmd__query` with a `vec` sub-query of the meeting's key topics + `intent` "finding related projects and areas for this meeting." See the `qmd` rule for query construction patterns.
-- **Date and series**: is this part of an ongoing series?
+Identify common framing first, then classify and load the matching profile.
 
-Present this context summary briefly. Getting the frame right matters -- the same words mean different things in a work standup vs. a meditation session.
+**Common framing (all transcripts):**
+- **Participants**: who was present; note which statements are the user's.
+- **Related projects/areas**: scan active projects for keyword matches. If meeting language doesn't obviously match project names (e.g., "kitchen remodel" vs. "Kitchen Renovation Plan"), use `mcp__qmd__query` with a `vec` sub-query of the key topics + `intent` "finding related projects and areas for this transcript." See the `qmd` rule.
+- **Date and series**: is this part of an ongoing series? Check for prior notes in the series.
+
+**Frame classification** — pick one:
+
+| Signal | Frame | Then |
+|--------|-------|------|
+| Work meeting: colleagues, workstreams, standup/1:1/cross-team/client/design-review/handoff | **work** | Read `references/work-profile.md` and follow its Step-2/3/4/5/7 deltas |
+| Anything else — generic meeting, recording with no domain specialization | **generic** | Use the inline taxonomy below; load no profile |
+
+If the frame is genuinely ambiguous (e.g., a work conversation that drifts into personal content), name the ambiguity and ask the user which profile to load.
+
+Present a brief context summary (frame, participants, related projects, date/series). Getting the frame right matters — the same words mean different things in a work standup vs. a casual conversation. Ask for corrections before extracting.
 
 ## Step 3: Deep analysis
 
-Analyze the full transcript. Extract everything with potential integration value using this fluid taxonomy (items can belong to multiple categories):
+Analyze the full transcript. Extract everything with potential integration value. Items can belong to multiple categories.
 
-**Action items** -- commitments or things that need doing
-- Owner (user vs. someone else)
-- Related project/area
-- GTD-actionable phrasing (starts with a verb)
-- Energy/time hints and deadlines if apparent
+**If the frame is work, the loaded profile REPLACES the generic taxonomy below with its domain taxonomy.** Use the generic taxonomy only for the generic frame.
 
-**Decisions made** -- things decided or agreed upon
-- What, who was involved, which project/area, any caveats
+**Generic taxonomy:**
 
-**Reference information** -- facts worth capturing
-- Key data, technical details, explanations
-- Whether it merits an atomic note or appending to an existing note
+**Action items** — commitments or things that need doing
+- Owner (user vs. someone else), related project/area, GTD-actionable phrasing (starts with a verb), energy/time hints and deadlines if apparent
 
-**Project context updates** -- information that changes project state
-- Status shifts, new constraints, timeline changes, completed work
+**Decisions made** — what was decided, who was involved, which project/area, any caveats
 
-**Insights and ideas** -- realizations, brainstorms, connections
-- Personal insights, ideas for later, cross-project connections
+**Reference information** — facts worth capturing; whether it merits an atomic note or appending to an existing one
 
-**Waiting-for items** -- others' commitments the user should track
-- Who, what, timeline if mentioned
+**Project context updates** — status shifts, new constraints, timeline changes, completed work
+
+**Insights and ideas** — realizations, brainstorms, cross-project connections
+
+**Waiting-for items** — others' commitments the user should track (who, what, timeline)
 
 It is entirely valid for a transcript to yield nothing in some or all categories. Flag that clearly without making it feel like a failure.
 
 ## Step 4: Present the integration plan
 
-Structure the plan clearly. For each proposed change, include destination, content, and rationale:
+Structure the plan clearly. For each proposed change, include destination, content, and rationale. **Use the plan template from the loaded profile when work; use the generic template below otherwise.**
 
 ```
 ## Integration Plan: [Transcript Name]
@@ -100,28 +111,31 @@ Structure the plan clearly. For each proposed change, include destination, conte
 - [ ] **[Insight]** -> [Suggested capture method]
 ```
 
-**Pause here.** Ask the user which items to execute, modify, or skip. The user might approve all, cherry-pick, rephrase items, or redirect destinations. Wait for their input before proceeding.
+**Pause here.** Ask the user which items to execute, modify, or skip. The user might approve all, cherry-pick, rephrase items, or redirect destinations. Wait for input before proceeding.
 
 ## Step 5: Execute approved changes
 
-For each approved item, apply using proper conventions:
+Apply each approved item using proper conventions. **Profiles add domain-specific destinations and formatting — follow the loaded profile's Step-5 list when work.** Generic baseline:
 
 - **Actions**: `- [ ] Verb phrase ~hints` in target note's Actions section
-- **Project updates**: Dated entry in the Context or Notes section
-- **Reference notes**: Create via `obsidian create` in `Notes/` with full frontmatter (categories, areas, status, tags, created) and wikilinks
-- **Decisions**: Dated entry in project Context section
-- **Waiting-for**: Add with `~Waiting` annotation
-- **Ideas**: Add to Someday Pool or create someday project via `/create-project`
-- **Insights**: Create atomic note in `Notes/` or append to existing note
+- **Project updates**: dated entry in the Context or Notes section
+- **Reference notes**: `obsidian create` in `Notes/` with full frontmatter (categories, areas, status, tags, created) and wikilinks
+- **Decisions**: dated entry in project Context section
+- **Waiting-for**: add with `~Waiting` annotation
+- **Ideas**: add to Someday Pool or create a someday project via `/create-project`
+- **Insights**: atomic note in `Notes/` or append to an existing note
 
 Follow the proactive linking checklist: frontmatter, areas links, project links, related notes, verify categories/areas properties.
 
+> When the frame touched any project, also update each touched project: add items to its action menu/context/notes, update status/constraints if changed, and add a bidirectional link to the transcript note. (The work profile specifies domain-specific project updates — cross-team multi-project routing.)
+
 ## Step 6: Handle the transcript note
 
-Check the transcript note's current state and offer options:
-- **Frontmatter**: Ensure transcript schema fields are present (categories, areas, tags, people, date, topics). Add or fix if missing.
-- **Links**: Add bidirectional links to all projects/areas touched during processing.
-- **Location**: If in `Inbox/`, suggest moving to `Notes/`. If already organized, leave it.
+Check the transcript note's current state and enrich:
+- **Frontmatter**: ensure transcript schema fields are present (`categories: ["[[Transcripts]]"]`, `areas`, `tags`, `people`, `date`/`session-date`, `topics`). The loaded profile specifies the exact schema (work: one-off vs. recurring). Add or fix missing fields.
+- **Summary**: if the note lacks a `## Summary`, offer to add one based on the analysis.
+- **Links**: add bidirectional links to all projects/areas/notes touched during processing.
+- **Location**: if in `Inbox/`, suggest moving to `Notes/`. If already organized, leave it.
 
 ## Step 7: Summary and commit
 
@@ -130,19 +144,20 @@ Report:
 - Notes created (with paths)
 - Notes modified (with paths)
 - Items skipped
-- Observations -- patterns noticed across transcripts (e.g., recurring topics without action, friction signals, emerging themes)
+- Observations — patterns across transcripts (recurring topics without action, friction signals, emerging/deepening themes, blocker trends)
 
-Commit all changes: "Process transcript: [Transcript Name]"
+Commit: `"Process transcript: [Transcript Name]"`. (The work profile may suggest a frame-specific message, e.g., `"Process work transcript: …"` — fine to use.)
 
 ---
 
 ## Quality Standards
 
-- **Plan first, execute on approval** -- never modify vault notes until the user confirms
-- **Distinguish ownership** -- only add user-owned actions to the system; others' actions become waiting-for items
-- **Respect nebulosity** -- when content is ambiguous, flag it: "This could be an action or context -- which feels right?"
-- **Match existing style** -- mirror the GTD-actionable phrasing and formatting in existing project notes
-- **Don't over-extract** -- casual conversation, social pleasantries, and filler are not integration material
-- **Preserve provenance** -- note which transcript produced each extracted item
-- **Handle series** -- for recurring sessions, check previous transcripts for continuity and evolving themes
-- **Adapt to type** -- a work meeting transcript produces different output than a meditation session transcript. Let the content determine the categories, not the other way around.
+- **Plan first, execute on approval** — never modify vault notes until the user confirms
+- **Distinguish ownership** — only add user-owned actions; others' actions become waiting-for items
+- **Respect nebulosity** — when content is ambiguous, flag it: "This could be an action or context — which feels right?"
+- **Match existing style** — mirror GTD-actionable phrasing and formatting in existing project notes
+- **Don't over-extract** — pleasantries, filler, logistics, and tangents are not integration material
+- **Preserve provenance** — note which transcript produced each extracted item
+- **Handle series** — for recurring sessions, check previous transcripts for continuity and evolving themes
+- **Adapt to type** — let the content (and the loaded profile) determine the categories, not the other way around
+- **Profile-specific standards** (blocker awareness, priority signals, participant resolution, etc.) live in the loaded profile — honor them whenever that frame is active
