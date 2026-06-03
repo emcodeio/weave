@@ -122,52 +122,11 @@ This step is conversational — no vault writes happen here. Only proceed to Pha
 
 ### Step 9: Write daily note dashboard + Intentions
 
-Write the following sections to today's daily note using `obsidian daily:read` + Edit tool (populate existing sections in place). Never use `daily:append` — it creates duplicate section headers.
-
-If today's daily note was created before the dashboard template and lacks these sections, add them in the correct position (before `---` and `## Morning State`) before populating.
-
-**`## Today's Options`** — The collaboratively chosen items from Phase 3, grouped by area:
-```
-### Work
-- [ ] Action text — [[Source Project Name]]
-
-### Personal
-- [ ] Action text — [[Source]]
-
-### Quick
-- [ ] Action text — [[Source]]
-```
-Group items by their source project's area (Work, Home, Personal, Health, etc.). Lightweight or standalone items go under **Quick**. Omit empty groups. Only items the user confirmed in Step 8. One checkbox per action.
-
-**`## Routines`** — Convert today's items from `[[Day-Specific Routines]]` (read in Step 4) to checkboxes:
-```
-- [ ] Routine item
-```
-Include items from today's day-of-week section AND the `## Daily` section. If no routines apply, leave the section empty.
-
-**`## Upcoming`** — Two-month horizon overview of critical items. Sources: calendar events (60-day scan from Step 3), Apple Reminders deadlines, and project milestones spotted during Step 6. Only critical items — deadlines, travel, social events, milestones, external commitments, time-sensitive decisions. Exclude recurring routine events (standups, regular 1:1s, daily blocks) unless this occurrence is unusual.
-
-```
-### This Week & Next
-- Item description — [[Source Project]] (if project-linked)
-
-### This Month
-- Item description
-
-### Next Month
-- Item description
-```
-
-Omit empty groups. One concise line per item — no time-of-day prefixes, no emoji. If nothing critical: "Nothing critical on the horizon."
-
-**`## Intentions`** — Qualitative intentions only. Task items live in Today's Options, not here. Intentions capture the user's stated priorities and desired feel for the day.
-
-**Quick inbox relevance pass**: Based on the confirmed choices, scan all inboxes for items immediately relevant to today's chosen work:
-- **Drafts**: `mcp__drafts__drafts_inbox` — read items, check relevance to chosen actions
-- **Obsidian inbox**: `obsidian search query="path:Inbox/" vault="{{VAULT_NAME}}"` — scan notes for relevance
-- **Unread email**: `mcp__mail__search` — keyword search based on chosen work topics (projects, people, subjects)
-
-Process ONLY relevant items. Everything else waits for `/deep-review`.
+Write the daily-note dashboard per the shared write-spec in `.claude/shared/daily-startup-dashboard.md`, with these parameters:
+- **Today's Options** — groups Work / Personal / Quick; a work-biased menu of the items confirmed in Step 8, weighted by enjoyable usefulness.
+- **Upcoming** — all critical items (work + personal); sources are the Step 3 60-day calendar scan and milestones spotted in Step 6.
+- **Intentions** — the user's stated priorities and desired feel for the day.
+- **Inbox relevance pass** — include unread email (`mcp__mail__search` on chosen work topics).
 
 ---
 

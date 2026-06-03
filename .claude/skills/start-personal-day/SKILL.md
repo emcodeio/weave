@@ -115,50 +115,17 @@ This step is conversational — no vault writes happen here. Only proceed to Pha
 
 ### Step 8: Write daily note dashboard + Intentions
 
-Write the following sections to today's daily note using `obsidian daily:read` + Edit tool (populate existing sections in place). Never use `daily:append` — it creates duplicate section headers.
-
-If today's daily note was created before the dashboard template and lacks these sections, add them in the correct position (before `---` and `## Morning State`) before populating.
-
-**`## Today's Options`** — The collaboratively chosen items from Phase 3, grouped by area:
-```
-### Personal
-- [ ] Action text — [[Source]]
-
-### Quick
-- [ ] Action text — [[Source]]
-```
-Group items by their source project's area (Home, Personal, Relationships, Health, etc.). Lightweight or standalone items go under **Quick**. Omit empty groups. Only items the user confirmed in Step 7. One checkbox per action. 3-5 items including leisure options.
-
-**`## Routines`** — Convert today's items from `[[Day-Specific Routines]]` (read in Step 4) to checkboxes:
-```
-- [ ] Routine item
-```
-Include items from today's day-of-week section AND the `## Daily` section. If no routines apply, leave the section empty.
-
-**`## Upcoming`** — Two-month horizon overview of critical items. Sources: calendar events (60-day scan from Step 3), Apple Reminders deadlines, and project milestones spotted during Step 5. Focus on personal deadlines, social events, trips, and family commitments. Skip routine work meetings unless they're major milestones.
-
-```
-### This Week & Next
-- Item description — [[Source Project]] (if project-linked)
-
-### This Month
-- Item description
-
-### Next Month
-- Item description
-```
-
-Omit empty groups. One concise line per item — no time-of-day prefixes, no emoji. If nothing critical: "Nothing critical on the horizon."
-
-**`## Intentions`** — Gentle intentions for a personal day. Task items live in Today's Options, not here.
-
-**Simplified inbox relevance pass**: Based on the confirmed choices, scan Drafts (`mcp__drafts__drafts_inbox`) and Obsidian inbox (`obsidian search query="path:Inbox/" vault="{{VAULT_NAME}}"`) for items immediately relevant to today's choices. Skip email on personal days. Process ONLY relevant items. Everything else waits for `/deep-review`.
+Write the daily-note dashboard per the shared write-spec in `.claude/shared/daily-startup-dashboard.md`, with these parameters:
+- **Today's Options** — groups Personal / Quick; 3-5 items including leisure options, from Step 7; no work items unless the user asks.
+- **Upcoming** — focus on personal deadlines, social events, trips, and family commitments; skip routine work meetings unless major milestones. Sources are the Step 3 60-day scan and Step 5.
+- **Intentions** — gentle intentions for a personal day.
+- **Inbox relevance pass** — Drafts + Obsidian inbox only; skip email on personal days.
 
 ---
 
 ### Step 9: Yesterday's observations + Summary + Commit
 
-If yesterday's daily note exists and doesn't already have an `## Observations` section, append one with 2-3 sentences noting patterns Claude detected — energy trends, mood patterns, or anything noteworthy from yesterday's data. Shadow pattern tracking at Tier 2 if applicable — same protocol as start-workday (observation + capacity evidence). On personal days, lean toward noting contradictions (pattern *didn't* fire) over noting activations. Keep it warm.
+If yesterday's daily note exists and doesn't already have an `## Observations` section, append one with 2-3 sentences noting patterns Claude detected — energy trends, mood patterns, or anything noteworthy from yesterday's data. Defense pattern tracking at Tier 2 if applicable — same protocol as start-workday (observation + capacity evidence). On personal days, lean toward noting contradictions (pattern *didn't* fire) over noting activations. Keep it warm.
 
 Present a warm summary: "Your day is open except [calendar items]. Some things that might be nice: [2-3 highlights]." Include the two-month horizon overview written to `## Upcoming`.
 
