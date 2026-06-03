@@ -54,8 +54,8 @@ Example merge brief:
 Merge two iteration drafts of the Habit Workshop Handout into a single canonical version for an upcoming habit-formation workshop.
 
 Source files:
-- /Users/.../Workbench/Activation Threshold/Activation Threshold — Habit Workshop Handout.md (long form, 9.8k)
-- /Users/.../Workbench/Activation Threshold/Activation Threshold — Habit Workshop Handout — Compressed.md (compressed form, 6.8k)
+- Workbench/Activation Threshold/Activation Threshold — Habit Workshop Handout.md (long form, 9.8k)
+- Workbench/Activation Threshold/Activation Threshold — Habit Workshop Handout — Compressed.md (compressed form, 6.8k)
 
 Audience: workshop participants — a mixed group new to the Activation Threshold framing
 Tone: warm, practical, plain-language; no jargon beyond the four named concepts

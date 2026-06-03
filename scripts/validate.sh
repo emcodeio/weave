@@ -129,10 +129,10 @@ done
 printf "\n${BOLD}[4] Component counts${NC}\n"
 
 SKILL_COUNT=$(find .claude/skills -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
-if [[ "$SKILL_COUNT" -eq 32 ]]; then
-  check_pass "Skills: $SKILL_COUNT (expected 32)"
+if [[ "$SKILL_COUNT" -eq 35 ]]; then
+  check_pass "Skills: $SKILL_COUNT (expected 35)"
 else
-  check_fail "Skills: $SKILL_COUNT (expected 32)"
+  check_fail "Skills: $SKILL_COUNT (expected 35)"
 fi
 
 AGENT_COUNT=$(find .claude/agents -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
@@ -143,17 +143,17 @@ else
 fi
 
 RULE_COUNT=$(find .claude/rules -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-if [[ "$RULE_COUNT" -eq 13 ]]; then
-  check_pass "Rules: $RULE_COUNT (expected 13)"
+if [[ "$RULE_COUNT" -eq 15 ]]; then
+  check_pass "Rules: $RULE_COUNT (expected 15)"
 else
-  check_fail "Rules: $RULE_COUNT (expected 13)"
+  check_fail "Rules: $RULE_COUNT (expected 15)"
 fi
 
 HOOK_COUNT=$(find .claude/hooks -name "*.sh" 2>/dev/null | wc -l | tr -d ' ')
-if [[ "$HOOK_COUNT" -eq 5 ]]; then
-  check_pass "Hooks: $HOOK_COUNT (expected 5)"
+if [[ "$HOOK_COUNT" -eq 6 ]]; then
+  check_pass "Hooks: $HOOK_COUNT (expected 6)"
 else
-  check_fail "Hooks: $HOOK_COUNT (expected 5)"
+  check_fail "Hooks: $HOOK_COUNT (expected 6)"
 fi
 
 TEMPLATE_COUNT=$(find Templates -maxdepth 1 -name "Template - *.md" 2>/dev/null | wc -l | tr -d ' ')

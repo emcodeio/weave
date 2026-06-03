@@ -69,7 +69,7 @@ QMD returns scores as 0-1 floats (matching the `minScore` parameter):
 
 A git post-commit hook keeps the index current automatically (~600ms per commit). No manual re-indexing needed during normal operation.
 
-For edge cases (iCloud sync without commit, manual edits outside Claude):
+For edge cases (vault synced without a commit, manual edits outside Claude):
 
 ```bash
 qmd update && qmd embed

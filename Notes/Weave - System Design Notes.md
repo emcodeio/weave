@@ -20,7 +20,7 @@ Things3 created a philosophical mismatch: the system was built around "options, 
 
 ## Why Drafts for capture
 
-Chapman's circumrationality requires low-friction bridges between intention and the formal system. Drafts provides instant capture on any Apple device with a single tap, pushing to `Inbox/` via iCloud folder bookmark. The capture point should have near-zero activation energy.
+Chapman's circumrationality requires low-friction bridges between intention and the formal system. Drafts provides instant capture on any Apple device with a single tap, pushing to `Inbox/` via a folder bookmark. The capture point should have near-zero activation energy.
 
 ## Why Apple Reminders for hard deadlines only
 

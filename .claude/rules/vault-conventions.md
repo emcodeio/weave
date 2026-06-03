@@ -7,7 +7,7 @@ Property-based structure with 7 clean folders:
 ```
 Notes/              — Everything I created or about my world (projects, area notes, category notes, system notes)
 References/         — External entities (books, people, places, companies)
-Attachments/        — Binary files (images, PDFs, audio, video) — gitignored, iCloud-synced
+Attachments/        — Binary files (images, PDFs, audio, video) — gitignored, synced outside git
 Workbench/          — Active working space for content being iterated (specs, drafts, collaborative docs)
 Inbox/              — Capture pipeline target
 Daily/              — Daily notes (ephemeral)
@@ -18,7 +18,7 @@ Templates/          — Note templates and .base files
 
 - **Notes**: Home for all personal notes — projects, areas, categories, system notes, research, frameworks, collections. The organizing question: "Did I create this, or does it relate to my world?"
 - **References**: Things that exist outside your world — books, people, places, companies. The organizing question: "Am I cataloging something external?"
-- **Attachments**: Flat folder for non-markdown files (PDFs, images, audio, etc.). Wrapper notes live in `Notes/` or `References/` and reference these files via embeds. Gitignored — iCloud handles sync.
+- **Attachments**: Flat folder for non-markdown files (PDFs, images, audio, etc.). Wrapper notes live in `Notes/` or `References/` and reference these files via embeds. Gitignored — synced outside git by your vault's sync method.
 - **Workbench**: Active working space for content being iterated — specs, drafts, collaborative documents. Lighter frontmatter than permanent notes (`status` + `created` required; `categories` not required). Content graduates to `Notes/` or `References/` when ready. See `workbench` rule.
 - **Inbox**: Quick capture target. Notes here should be brief. During reviews, process into `Notes/` or `References/` (or delete).
 - **Daily**: Daily notes created by Obsidian's Daily Notes plugin. Ephemeral scratch capture — processed during reviews, no backlinks needed.

@@ -16,7 +16,7 @@ Weave is a [[Weave - Chapman Framework|meta-rational]] productivity system where
 
 Everything below is scoped to the project-level installation at `.claude/` in the `weave` repo. This is the shipped template — user-invoked, user-installed skills/hooks that live elsewhere are not included.
 
-**Counts:** 32 skills · 5 agents · 13 rules · 5 hooks.
+**Counts:** 35 skills · 5 agents · 15 rules · 6 hooks.
 
 This document groups each component under the role it most naturally serves, plus a **Cross-cutting** section for utility/format pieces that every role relies on. Each entry notes *what it is* and *how it fits the role's purpose in the system*.
 
@@ -50,6 +50,7 @@ The Architect level handles structural changes to the productivity system itself
 
 - **`protect-system-files.sh`** (PreToolUse on Edit/Write) — Hard-blocks writes to `.obsidian/`, `settings.local.json`, kepano plugin skills, and `.claude-plugin/`. *Role fit:* Mechanically enforces the "protected files" boundary that `architect-operations` describes in prose, so an errant instruction can't corrupt the system.
 - **`setup-git-hooks.sh`** — Installs the `post-commit` hook that runs `qmd update && qmd embed` after each commit. *Role fit:* One-time infrastructure step that keeps semantic search fresh without requiring ongoing discipline.
+- **`check-protected-skills.sh`** (manually run) — Diffs the vendored kepano plugin skills against their upstream `main` branch, file by file, and reports drift (the upstream ships content changes without bumping the plugin version, so the marketplace update check is unreliable). *Role fit:* The companion to `protect-system-files.sh` — that hook blocks edits to the kepano skills; this one tells you when upstream has moved so a user-authorized re-sync is warranted.
 
 ---
 
@@ -72,7 +73,9 @@ The Orchestrate level is the day-to-day operating surface: reviews, inbox proces
 - **`/create-project`** — Scaffolds a new project note with action menu, Bases views, outcome, and proactive linking. *Role fit:* The entry point when something crosses the "clear outcome + 2 actions" threshold that defines a project in Weave.
 - **`/advance-project`** — Takes a natural-language "I did X" and matches it to existing actions, updates completions, surfaces what's next. *Role fit:* The canonical way to record progress without manually editing checkboxes.
 - **`/complete-project`** — Sets `status: completed`, resolves stragglers, cleans daily note, and offers retrospective. *Role fit:* Provides clean closure that preserves links (Weave keeps completed notes rather than deleting them).
-- **`/integrate-workbench`** — Graduates a `status: ready` workbench note to its permanent home with full proactive linking. *Role fit:* The bridge between Partner-level iteration space and the permanent knowledge graph.
+- **`/integrate-workbench`** — Graduates a `status: ready` workbench note to its permanent home with full proactive linking. *Role fit:* The bridge between Partner-level iteration space and the permanent knowledge graph; the lightweight default for single, non-forge items.
+- **`/integrate-concept-forge`** — Graduates a concept-forge artifact into a note network: spine concept + card-grade satellites, person-note updates, sources propagation, and an auto-offered chain to `/integrate-concept-cluster` when a sibling cluster exists. *Role fit:* The forge-specific graduation path — turns the multi-session conceptual work product into permanent, fully-linked notes.
+- **`/integrate-concept-cluster`** — Triages a workbench cluster of related working documents (shape detection, iteration-pair reconciliation, optional composite drafting) and applies per-item graduations, absorptions, and deletions on a confirmed plan. *Role fit:* The cluster-level counterpart to `/integrate-workbench`; runs standalone for any cluster or chained from `/integrate-concept-forge`.
 - **`/process-inbox`** — Scan → classify → confirm → execute across Obsidian `Inbox/` and Drafts inbox in a single batch. *Role fit:* The workflow the `/deep-review` skill orchestrates; the batch model prevents per-item context thrash.
 
 ### Agents
@@ -104,8 +107,10 @@ The Partner level is where Claude and the user work on a specific thing together
 - **`/draft-content`** — Gather context → outline → draft → place in vault with full frontmatter and linking. *Role fit:* Forks to the `content-drafter` agent so voice/style preferences accumulate over time.
 - **`/open-workbench`** — Orients for focused work on a workbench item: loads the item, parent project state, recent activity, related vault knowledge. *Role fit:* The session primer for iterative partner work; pairs with `/integrate-workbench` at the other end.
 - **`/ingest-written-content`** — Parses an external article/essay into linked article + concept + framework notes. *Role fit:* Converts outside-world reading into first-class citizens of the knowledge graph.
+- **`/ingest-book`** — Captures a book into a structured `References/` note — themes, key ideas, and quotes — with linked concept and framework notes for ideas worth promoting. *Role fit:* The book-length counterpart to `/ingest-written-content`; turns reading into reusable, well-linked vault knowledge.
 - **`/process-transcript`** — Single transcript processor: detects the frame (generic vs. work) and extracts actions, reference material, project context, decisions, and insights — adding blocker and cross-team coordination categories plus meeting-type detection when the work frame is active (via `references/work-profile.md`). Proposes an integration plan before acting. *Role fit:* The "plan → confirm → execute" shape that keeps Partner work transparent and reversible.
 - **`/process-llm-conversation`** — Analyzes exported LLM conversations (Claude/ChatGPT/Gemini), extracting knowledge, decisions, actions, and content produced. *Role fit:* Treats AI conversations as a legitimate knowledge source, preserving what was learned before the chat gets lost.
+- **`/concept-forge`** — Forges a nascent idea or intuition into a Chapman-compliant concept card across one session or many, iterating in a Workbench artifact (loads the `concept-craft` rule for stance and schema). *Role fit:* The dialogic engine for conceptual work — Partner-level thinking-with, where the work product is a refined concept rather than a research finding or a draft.
 
 ### Agents
 
@@ -115,6 +120,8 @@ The Partner level is where Claude and the user work on a specific thing together
 ### Rules
 
 - **`partner-conventions.md`** — When to create a vault note vs. respond conversationally, research standards (vault-first, cite sources, confidence levels), drafting standards (voice, headings, wikilinks), Workbench routing criteria, skill/agent delegation patterns. *Role fit:* The quality bar for Partner-level work products; the guidance that makes "help me with X" produce something worth keeping.
+- **`concept-craft.md`** — Chapman-aligned stance for conceptual work: reasonableness before rationality, the three nebulosity types, the purpose-first concept card schema, and anti-sycophancy / anti-refinement-addiction guardrails. Globally available; applies when the work is conceptual. *Role fit:* The thinking-with stance `/concept-forge` runs on (and `/research-topic`, `/ingest-written-content` borrow when the question is conceptual) — keeps concept work honest rather than agreeable.
+- **`concept-forge-artifact-format.md`** — Specifies the Workbench artifact that `/concept-forge` writes and `/integrate-concept-forge` reads (path-scoped to `Workbench/concept-forge/`). *Role fit:* The shared contract that lets forging span sessions and graduate cleanly — the artifact is the memory.
 
 ---
 
@@ -153,7 +160,7 @@ A few structural observations worth calling out, since they're easier to see in 
 2. **Hooks mechanically enforce the rules prose.** `protect-system-files.sh` makes `architect-operations.md`'s protected-files list real. `check-note-quality.sh` makes the proactive-linking frontmatter schema real. The rules describe the policy; the hooks make it mandatory.
 3. **QMD + git + the post-commit hook form the retrieval loop.** Every commit triggers a re-index; semantic search stays fresh without manual action. `qmd.md` and `version-control.md` together describe this loop; `setup-git-hooks.sh` installs it.
 4. **The rule split mirrors the role split.** `architect-operations` is paths-scoped frontmatter-gated to system files; `weave-principles` and `workbench` govern Orchestrate; `partner-conventions` governs Partner. The cross-cutting rules (`operating-principles`, `vault-conventions`, `obsidian-cli`, `qmd`, `version-control`) apply universally and are unscoped.
-5. **Review skills are the Orchestrate heartbeat.** Seven of the twelve Orchestrate skills are review sessions (daily + weekly startups and shutdowns + deep review + weekend close). Inbox processing is deliberately concentrated in `/deep-review` so daily reviews stay fast — a structural expression of the "options, not orders" stance.
+5. **Review skills are the Orchestrate heartbeat.** Seven of the fourteen Orchestrate skills are review sessions (daily + weekly startups and shutdowns + deep review + weekend close); the rest cover project lifecycle, inbox, and workbench graduation. Inbox processing is deliberately concentrated in `/deep-review` so daily reviews stay fast — a structural expression of the "options, not orders" stance.
 6. **The Workbench bridges Partner and Orchestrate.** Partner-level drafting happens in `Workbench/` with lightweight frontmatter; `/integrate-workbench` at the Orchestrate level graduates finished items into the permanent graph. This keeps in-progress work out of the "everything must be fully linked" regime without losing it.
 
 ---

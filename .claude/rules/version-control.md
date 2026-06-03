@@ -33,6 +33,6 @@ A git `post-commit` hook automatically runs `qmd update && qmd embed` after ever
 
 ## .gitignore
 
-Excluded: `.obsidian/workspace.json`, `.obsidian/workspace-mobile.json`, `.obsidian/cache/`, `.trash/`, `.DS_Store`, `.claude/settings.local.json`, `.claude/plans/`, `.claude/memory/`, `.claude/agent-memory-local/`, `.claude/hooks/logs/`, iCloud conflict files.
+Excluded: `.obsidian/workspace.json`, `.obsidian/workspace-mobile.json`, `.obsidian/cache/`, `.trash/`, `.DS_Store`, `.claude/settings.local.json`, `.claude/plans/`, `.claude/memory/`, `.claude/agent-memory-local/`, `.claude/hooks/logs/`, sync-conflict files.
 
 Tracked: All vault notes, `.obsidian/` config files (settings, plugins, appearance), `.claude/skills/`, `.claude/hooks/*.sh`, `.claude/rules/`, `.claude/settings.json`, `.claude-plugin/`, `CLAUDE.md`.

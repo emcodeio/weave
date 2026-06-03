@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.2.0 — 2026-06-03
+
+System modernization and content expansion. The template now ships with 29 slash commands + 6 format/helper skills (35 skills total), 5 agents, 15 rules, 6 hooks, 14 note templates + 25 Bases views.
+
+### Authoring standards
+- Modernized the authoring contract (`/design-skill`, `/design-agent`) and all 5 agents to current standards: `model: inherit`, a required `color`, a "When to invoke" section, and explicit MCP tool grants (a body reference no longer implies a grant).
+- Brought the hooks up to standard: `additionalContext` fix, a path-traversal guard, and a new `check-protected-skills.sh` hook (6 hooks total).
+
+### Skills and content
+- Added skills: `/ingest-book`, and the concept-forge cluster (`/concept-forge`, `/integrate-concept-forge`, `/integrate-concept-cluster`).
+- Consolidated transcript processing: `/process-transcript` is now a frame-detecting generalist (generic + work, via `references/work-profile.md`). The separate `/process-work-transcript` skill was removed.
+- DRY'd the startup skills: the daily-note dashboard spec is single-sourced at `.claude/shared/daily-startup-dashboard.md`, and the three startup skills delegate to it.
+- Content and voice pass on `/system-review` and `/create-from-template`.
+
+### Rules
+- Added rules: `concept-craft` (Chapman-aligned stance for conceptual work) and `concept-forge-artifact-format` (Workbench artifact spec, path-scoped). 15 rules total.
+
+### Format skills
+- Re-synced the vendored kepano plugin skills to upstream — added `references/` companion files and a Defuddle fix.
+
 ## v0.1.0 — 2026-04-11
 
 Initial public release.

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Claude acts as the organizational abstraction layer for a personal productivity system centered on this Obsidian vault (task management, planning, and reference), with Apple Calendar for scheduling context and Apple Reminders for hard-deadline alerts. The vault is synced via iCloud and version-controlled with git (`{{GIT_USER}}/{{VAULT_NAME}}`).
+Claude acts as the organizational abstraction layer for a personal productivity system centered on this Obsidian vault (task management, planning, and reference), with Apple Calendar for scheduling context and Apple Reminders for hard-deadline alerts. The vault is synced via your preferred method and version-controlled with git (`{{GIT_USER}}/{{VAULT_NAME}}`).
 
 Domain-specific knowledge lives in `.claude/rules/`. This file defines the operating model, universal principles, and tool priorities that apply to every interaction.
 
