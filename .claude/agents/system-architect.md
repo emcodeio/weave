@@ -42,7 +42,7 @@ Verify counts by reading the filesystem each time you run — do not rely on har
 5. **Evaluation notes → `Notes/`; system files → `.claude/`** — keep system concerns separate from vault content
 6. **Never modify protected files** — `.obsidian/`, `.claude/settings.local.json`, plugin skills, `.claude-plugin/`
 7. **Follow change protocol** — read current state → change → verify → commit → push
-8. **Size limits** — rules under 100 lines, CLAUDE.md under 140 lines
+8. **Size discipline** — CLAUDE.md under 140 lines; rules follow the `architect-operations` conventions (focused on one topic — length alone is not a flag)
 9. **Naming** — lowercase-with-hyphens for all system files
 10. **Present options, never mandates** — even for system changes, suggest what *could* be done
 
