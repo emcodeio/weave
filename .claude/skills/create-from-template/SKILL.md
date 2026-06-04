@@ -10,21 +10,8 @@ Create a new vault note of type "$ARGUMENTS" using the template library.
 
 ## Available Templates
 
-| Template | Categories Value | Target Directory | Key Properties |
-|----------|-----------------|-----------------|----------------|
-| project | `[[Projects]]` | `Notes/` | status, areas |
-| transcript | `[[Transcripts]]` | `Notes/` | people, date, topics |
-| research | `[[Research]]` | `Notes/` | topics |
-| framework | `[[Frameworks]]` | `Notes/` | topics |
-| book | `[[Books]]` | `References/` | author, topics, via |
-| collection | `[[Collections]]` | `Notes/` | last |
-| wrapper | `[[Attachments]]` | `Notes/` or `References/` | source |
-| person | `[[People]]` | `References/` | org |
-| essay | `[[Essays]]` | `Notes/` | topics |
-| guide | `[[Guides]]` | `Notes/` | — |
-| evergreen | `[[Evergreen]]` | `Notes/` | topics |
-| daily | `[[Journal]]` | `Daily/` | energy, mood |
-| category | (meta) | `Notes/` | tags: [categories] |
+Read the live template library rather than relying on a static list (it drifts as templates are added or changed):
+- List `Templates/` for the available template files, and read the **Template Type Map** in [[Note Schemas]] for each type's `categories` value, target directory, and type-specific properties — the schema is the source of truth.
 
 Three pieces work together per note type: the **template file** (in `Templates/`), a **`.base`** (the saved Obsidian view that lists notes of that type), and a **category note** (the hub that embeds that base). `/create-template` defines this "Trinity" in full; this skill consumes it — the terms recur in Steps 2b and 4.
 
@@ -54,16 +41,7 @@ Ask the user for properties not already known from context:
 - `status` — active or someday? (default: active)
 
 **Type-specific (gather based on template):**
-- Transcript: `people` (participants), `date` (event date), `topics` (concepts covered)
-- Research: `topics`
-- Framework: `topics`
-- Book: `author`, `via` (how discovered)
-- Collection: (no additional required — `last` set when collection is used)
-- Wrapper: `source` (the attachment file)
-- Person: `org` (organization affiliation)
-- Essay: `topics`
-- Guide: (no additional required)
-- Evergreen: `topics`
+- Consult the Template Type Map in [[Note Schemas]] for the type's properties; gather those not inferable from context.
 
 Skip gathering for properties the user has already mentioned in context. Suggest values where Claude can infer them.
 
