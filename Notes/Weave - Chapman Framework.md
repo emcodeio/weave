@@ -4,7 +4,6 @@ tags: [framework, self-management]
 created: 2026-03-02
 areas: ["[[Self-Management]]"]
 categories: ["[[Frameworks]]"]
-topics: ["[[Weave]]"]
 ---
 
 # Weave - Chapman Framework

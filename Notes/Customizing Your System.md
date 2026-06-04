@@ -30,7 +30,7 @@ Areas are deliberately broad. A note about a home renovation project has `areas:
 
 Categories describe what kind of note something is. They drive the Base views that let you browse your vault.
 
-**Shipped categories:** Projects, Research, Articles, Books, People, Evergreen, Frameworks, Guides, Essays, Collections, Transcripts, Journal, Attachments
+**Default categories (created during setup):** Projects, Research, Articles, Books, People, Evergreen, Frameworks, Guides, Essays, Collections, Transcripts, Journal, Attachments
 
 **To add a category:** Use `/create-template` to design a new note type, which creates the template, category note, and Base view together. Or tell Claude to create a category note manually.
 

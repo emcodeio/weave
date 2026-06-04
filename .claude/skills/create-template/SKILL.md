@@ -33,9 +33,7 @@ Gather from the user:
 ### 2. Research existing patterns
 
 Before designing, read these files for conventions and context:
-- [[Vault Reorganization - Template Library Design]] (completed research) — template inventory, composability rules, design philosophy
-- [[Vault Reorganization - Property Architecture]] (completed research) — property naming conventions, types.json structure
-- [[Note Schemas]] — current schema documentation
+- [[Note Schemas]] — current schema documentation, including the Template Type Map
 - Existing templates in `Templates/` — for structural patterns
 - `.obsidian/types.json` — current property type registry
 

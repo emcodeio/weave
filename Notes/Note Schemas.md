@@ -133,7 +133,7 @@ Used for exported LLM conversations (Claude, ChatGPT, Gemini, etc.) processed vi
 |-------|------|-------------|
 | `source-platform` | string | LLM platform: "Claude", "ChatGPT", "Gemini", etc. |
 | `conversation-date` | date | Date of the conversation (YYYY-MM-DD) |
-| `conversation-type` | string | Primary purpose: "research", "drafting", "problem-solving", "brainstorming", "learning", "building", "planning", "practice-session" |
+| `conversation-type` | string | Primary purpose: "research", "drafting", "problem-solving", "brainstorming", "learning", "building", "planning" |
 
 ## Workbench Extension
 
@@ -143,7 +143,7 @@ Used for notes in `Workbench/` — active working documents being iterated befor
 |-------|------|----------|-------------|
 | `status` | string | Yes | `drafting`, `paused`, or `ready` |
 | `created` | date | Yes | Creation date (YYYY-MM-DD) |
-| `project` | wikilink | No | Parent project note (e.g., `"[[Module Function Spec Defined]]"`) |
+| `project` | wikilink | No | Parent project note (e.g., `"[[Kitchen Renovation]]"`) |
 | `areas` | list of wikilinks | No | Area context (optional until graduation) |
 | `tags` | list | No | Free-form |
 
