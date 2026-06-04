@@ -12,7 +12,7 @@ Design and create a new vault template for "$ARGUMENTS".
 
 ## Context
 
-This skill creates a new template type in the vault's composable template library. The library was designed during the [[Vault Structure Optimized]] project. Design philosophy and composability rules are documented in [[Vault Reorganization - Template Library Design]] (completed research); property conventions in [[Vault Reorganization - Property Architecture]] (completed research). For the current authoritative schema, see [[Note Schemas]].
+This skill creates a new template type in the vault's composable template library. For the current authoritative schema — including the per-type Template Type Map — see [[Note Schemas]].
 
 Every template type can have up to three components (the "Trinity"):
 1. **Template file** in `Templates/` — defines frontmatter schema and body sections
@@ -105,10 +105,8 @@ Read `.obsidian/types.json` and add any new property names with their types:
 ### 8. Update documentation
 
 **Note Schemas** (`[[Note Schemas]]`):
-- Add a new extension section documenting the template's properties
-
-**Template Library Design** (`[[Vault Reorganization - Template Library Design]]`):
-- Add the new template to the appropriate tier (this is a completed research note — only update if the new template establishes a significant pattern)
+- Add the type's row to the Template Type Map
+- Add a new extension section documenting the template's properties (when the type has fields beyond the map row)
 
 ### 9. Commit
 
