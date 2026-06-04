@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **Note Schemas is now the per-type source of truth**: added a Template Type Map (type → category → target directory → type-specific properties, matching the shipped templates exactly) and reconciled the Transcript extension (`people`, `topics`) and Wrapper extension (both capture-pipeline and template-created wrapper fields documented). `/create-from-template` now reads the live template library + the Type Map instead of carrying a static table.
+- **System Overview** lists all skills per operating level, mirroring System Components by Role (Architect 7 / Orchestrate 14 / Partner 8) — the v0.2.0 additions are now visible in the overview.
+- Doc polish: removed origin-vault vestiges (a `practice-session` example, a private project-name example, an undocumented `topics` field), removed dangling research-note references in `/create-template`, and clarified that default categories are created during setup.
+
 ## v0.2.0 — 2026-06-03
 
 System modernization and content expansion. The template now ships with 29 slash commands + 6 format/helper skills (35 skills total), 5 agents, 15 rules, 6 hooks, 14 note templates + 25 Bases views.
