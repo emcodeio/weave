@@ -52,7 +52,7 @@ Cite public thinkers as influences by linking to the shipped framework note (e.g
 
 When bringing origin improvements into Weave, work through these steps in order:
 
-1. **Consult the disposition manifest.** Origin maintains a per-artifact manifest classifying every `.claude/` artifact class as portable, de-personalize, or do-not-port. Read it first — it tells you what is in scope and how each piece should be handled.
+1. **Consult the disposition manifest.** Origin maintains a per-artifact manifest — the "Weave Sync Manifest" note in its `Notes/` folder — classifying every `.claude/` artifact class as portable, de-personalize, or do-not-port. Read it first — it tells you what is in scope and how each piece should be handled.
 
 2. **Port or update the in-scope artifacts.** For each portable or de-personalize artifact that changed in origin, bring the new version across.
 
