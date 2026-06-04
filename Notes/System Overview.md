@@ -18,19 +18,19 @@ Weave organizes your work through three operating levels, a 7-folder vault struc
 
 Structural changes to the productivity system itself. Modifying rules, skills, hooks, templates, or CLAUDE.md.
 
-**Key skills:** `/design-skill`, `/design-agent`, `/create-template`, `/system-review`
+**Skills:** `/create-from-template`, `/create-template`, `/design-skill`, `/design-agent`, `/evaluate-tool`, `/resolve-contradictions`, `/system-review`
 
 ### Orchestrate — "Am I managing what gets done?"
 
 Task operations. Processing inboxes, advancing projects, running reviews, surfacing context and options.
 
-**Key skills:** `/start-workday`, `/start-work-week`, `/start-personal-day`, `/end-workday`, `/end-personal-day`, `/end-weekend`, `/deep-review`, `/process-inbox`, `/create-project`, `/advance-project`, `/complete-project`
+**Skills:** `/start-workday`, `/start-work-week`, `/start-personal-day`, `/end-workday`, `/end-personal-day`, `/end-weekend`, `/deep-review`, `/process-inbox`, `/create-project`, `/advance-project`, `/complete-project`, `/integrate-workbench`, `/integrate-concept-forge`, `/integrate-concept-cluster`
 
 ### Partner — "Am I working on a task with the user?"
 
 Collaborative execution. Research, writing, drafting, exploration. Claude brings vault context and handles structure while you lead direction.
 
-**Key skills:** `/research-topic`, `/draft-content`, `/open-workbench`, `/integrate-workbench`, `/ingest-written-content`, `/process-transcript`
+**Skills:** `/research-topic`, `/draft-content`, `/open-workbench`, `/ingest-written-content`, `/ingest-book`, `/process-transcript`, `/process-llm-conversation`, `/concept-forge`
 
 ---
 
