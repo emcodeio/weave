@@ -22,12 +22,18 @@ print_warn()   { printf "  ${YELLOW}!!${NC} %s\n" "$1"; }
 print_err()    { printf "  ${RED}**${NC} %s\n" "$1"; }
 print_info()   { printf "  %s\n" "$1"; }
 
+# Prompts: -e enables readline (backspace/arrow editing) when stdin is a terminal;
+# bash silently skips readline on non-tty stdin, so piped input still works.
+# The colored prompt stays on printf >&2 (not read -p: readline counts raw ANSI
+# escapes toward column width and miscalculates wraps). The || guard makes EOF
+# (Ctrl-D, or exhausted non-tty stdin) fall back to the default instead of
+# aborting the script via set -e.
 prompt_with_default() {
   local prompt="$1"
   local default="$2"
   local result
   printf "${prompt} ${DIM}[${default}]${NC}: " >&2
-  read -r result
+  read -e -r result || result=""
   echo "${result:-$default}"
 }
 
@@ -36,7 +42,7 @@ prompt_yes_no() {
   local default="${2:-y}"
   local result
   printf "${prompt} ${DIM}[${default}]${NC}: " >&2
-  read -r result
+  read -e -r result || result=""
   result="${result:-$default}"
   result="$(printf '%s' "$result" | tr '[:upper:]' '[:lower:]')"
   [[ "$result" == "y" || "$result" == "yes" ]]
@@ -58,6 +64,57 @@ os_label() {
     *)       echo "this platform" ;;
   esac
 }
+
+# Portable timeout (macOS ships no GNU `timeout`; /bin/bash is 3.2 — keep it 3.2-safe).
+# Closes the child's stdin so a hidden interactive prompt (a shimmed npm, corepack's
+# "ok to download? [Y/n]") can never block setup forever, runs the child in its own
+# process group so the kill reaches grandchildren (npm's node subprocess), and
+# returns 124 on timeout vs. the child's real exit code otherwise.
+# Call sites MUST guard the return (if/|| rc=$?) — set -e is active.
+run_with_timeout() {
+  local timeout="$1"; shift
+  local cmd_rc=0
+
+  # set -m puts the background child in its own process group (pgid == pid),
+  # so the watchdog's negative-pid kill takes out the whole tree (npm's node
+  # subprocesses included). Toggled off right after.
+  set -m
+  "$@" </dev/null &
+  local cmd_pid=$!
+  set +m
+
+  # Watchdog: polls for the child's death (1s) and exits on its own rather than
+  # being signaled — signaling a just-forked subshell can orphan its sleep on
+  # bash 3.2. Redirected to /dev/null so it never holds a $(...) capture pipe.
+  ( set +m
+    waited=0
+    while [ "$waited" -lt "$timeout" ]; do
+      sleep 1
+      kill -0 "$cmd_pid" 2>/dev/null || exit 0
+      waited=$((waited + 1))
+    done
+    kill -TERM -- "-${cmd_pid}" 2>/dev/null
+    sleep 2
+    kill -KILL -- "-${cmd_pid}" 2>/dev/null
+  ) >/dev/null 2>&1 &
+  local watch_pid=$!
+
+  if wait "$cmd_pid" 2>/dev/null; then cmd_rc=0; else cmd_rc=$?; fi
+  # Watchdog notices the child is gone within ~1s and exits; no strays remain.
+  wait "$watch_pid" 2>/dev/null || true
+
+  # 143/137 = the watchdog's TERM/KILL landed -> report as timeout.
+  if [[ "$cmd_rc" -eq 143 || "$cmd_rc" -eq 137 ]]; then
+    return 124
+  fi
+  return "$cmd_rc"
+}
+
+# Non-tty stdin (piped input, CI): readline is skipped automatically, EOF falls
+# back to defaults, and network-install prompts default to "n" (see below) so an
+# unattended run can't kick off multi-GB downloads.
+STDIN_IS_TTY=true
+[[ -t 0 ]] || STDIN_IS_TTY=false
 
 TOTAL_STEPS=11
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -89,6 +146,10 @@ if ! prompt_yes_no "Ready to begin?"; then
   exit 0
 fi
 
+if [[ "$STDIN_IS_TTY" == false ]]; then
+  print_info "Non-interactive stdin detected — using defaults; network installs (QMD, pipx) will be skipped."
+fi
+
 # ============================================================================
 # Step 1: Check prerequisites
 # ============================================================================
@@ -98,26 +159,36 @@ MISSING_CRITICAL=()
 
 # --- Critical: setup.sh itself uses these ---
 
-# Node.js 18+ (required for QMD and every npx-based integration)
-if command -v node &>/dev/null; then
-  NODE_MAJOR=$(node --version | sed 's/v//' | cut -d. -f1)
+# Node.js 18+ (required for QMD and every npx-based integration).
+# Version probes run under a timeout: a shimmed/broken toolchain that hangs on
+# `--version` would otherwise stall setup before it even starts.
+NODE_VERSION=""
+if ! command -v node &>/dev/null; then
+  print_err "Node.js not found (needed for semantic search and integrations)."
+  MISSING_CRITICAL+=("Node.js 18+ — from https://nodejs.org (or: brew install node)")
+elif NODE_VERSION=$(run_with_timeout 15 node --version 2>/dev/null); then
+  NODE_MAJOR=$(printf '%s' "$NODE_VERSION" | sed 's/v//' | cut -d. -f1)
   if [[ "$NODE_MAJOR" -ge 18 ]]; then
-    print_ok "Node.js $(node --version)"
+    print_ok "Node.js $NODE_VERSION"
   else
-    print_err "Node.js $(node --version) found, but 18+ is required."
+    print_err "Node.js $NODE_VERSION found, but 18+ is required."
     MISSING_CRITICAL+=("Node.js 18+ — from https://nodejs.org (or: brew install node)")
   fi
 else
-  print_err "Node.js not found (needed for semantic search and integrations)."
-  MISSING_CRITICAL+=("Node.js 18+ — from https://nodejs.org (or: brew install node)")
+  print_err "Node.js found, but 'node --version' didn't respond within 15s."
+  MISSING_CRITICAL+=("Node.js 18+ — 'node --version' must return promptly (a shimmed toolchain may be intercepting it)")
 fi
 
 # npm (ships with Node, but some distros split it out)
-if command -v npm &>/dev/null; then
-  print_ok "npm $(npm --version)"
-else
+NPM_VERSION=""
+if ! command -v npm &>/dev/null; then
   print_err "npm not found (ships with Node.js)."
   MISSING_CRITICAL+=("npm — comes with Node.js 18+ (reinstall Node, or your distro's nodejs-npm package)")
+elif NPM_VERSION=$(run_with_timeout 15 npm --version 2>/dev/null); then
+  print_ok "npm $NPM_VERSION"
+else
+  print_err "npm found, but 'npm --version' didn't respond within 15s."
+  MISSING_CRITICAL+=("npm — 'npm --version' must return promptly; if an alternative toolchain (pnpm/bun/Vite Plus) shims npm, put real npm on PATH")
 fi
 
 # git (required for version control + the search-index hook)
@@ -199,34 +270,63 @@ printf "${DIM}Strongly recommended. First run downloads ~2GB of local models (~5
 
 QMD_AVAILABLE=false
 
+# Network installs default to "n" when stdin isn't a terminal, so an unattended
+# run can't silently answer "y" and start a multi-GB download.
+NET_INSTALL_DEFAULT="y"
+[[ "$STDIN_IS_TTY" == false ]] && NET_INSTALL_DEFAULT="n"
+
 if command -v qmd &>/dev/null; then
   print_ok "QMD already installed ($(command -v qmd))"
   QMD_AVAILABLE=true
-elif prompt_yes_no "  Install QMD now? (npm install -g @tobilu/qmd)"; then
-  printf "  Installing QMD...\n"
-  if npm install -g @tobilu/qmd >/tmp/weave-qmd-install.log 2>&1; then
+elif prompt_yes_no "  Install QMD now? (npm install -g @tobilu/qmd)" "$NET_INSTALL_DEFAULT"; then
+  printf "  Installing QMD — usually a minute or two. Progress log: /tmp/weave-qmd-install.log\n"
+  rc=0
+  run_with_timeout 600 npm install -g @tobilu/qmd >/tmp/weave-qmd-install.log 2>&1 || rc=$?
+  if [[ "$rc" -eq 0 ]]; then
     print_ok "QMD installed"
     QMD_AVAILABLE=true
   else
-    print_warn "QMD install failed. Common causes: permissions (consider a Node version manager, or 'sudo npm install -g @tobilu/qmd'), or network."
+    if [[ "$rc" -eq 124 ]]; then
+      print_warn "QMD install timed out after 10 minutes and was stopped."
+    else
+      print_warn "QMD install failed (exit $rc). Common causes: permissions (consider a Node version manager, or 'sudo npm install -g @tobilu/qmd'), or network."
+    fi
     print_warn "Full log at /tmp/weave-qmd-install.log — install later and re-run, or run it by hand."
+    print_info "If you use a different toolchain, install QMD globally with its own command instead — e.g."
+    print_info "  pnpm add -g @tobilu/qmd  |  bun add -g @tobilu/qmd  |  yarn global add @tobilu/qmd"
+    print_info "(Vite Plus or others: use their global-install equivalent.) Note: .mcp.json runs MCP servers"
+    print_info "via npx, so npm/npx must stay on your PATH regardless. Then re-run setup, or run by hand:"
+    print_info "  qmd init && qmd update && qmd embed"
   fi
 else
   print_info "Skipping QMD. Install later: npm install -g @tobilu/qmd"
 fi
 
 if [[ "$QMD_AVAILABLE" == true ]]; then
-  printf "\n  Setting up the search index (downloads models on first run)...\n"
+  printf "\n  Setting up the search index...\n"
   if [[ ! -f "${HOME}/.config/qmd/index.yml" ]]; then
-    qmd init >/dev/null 2>&1 || print_warn "qmd init reported an issue; continuing."
+    rc=0
+    run_with_timeout 120 qmd init >/dev/null 2>&1 || rc=$?
+    if [[ "$rc" -ne 0 ]]; then
+      print_warn "qmd init reported an issue (or timed out); continuing."
+    fi
   fi
-  if qmd collection add --name "$VAULT_NAME" --path "$VAULT_PATH" --pattern "**/*.md" >/dev/null 2>&1; then
+  if run_with_timeout 60 qmd collection add --name "$VAULT_NAME" --path "$VAULT_PATH" --pattern "**/*.md" >/dev/null 2>&1; then
     print_ok "QMD collection '$VAULT_NAME' registered"
   else
     print_info "QMD collection already exists or couldn't be added; continuing."
   fi
-  if qmd update >/dev/null 2>&1 && qmd embed >/dev/null 2>&1; then
-    print_ok "QMD index built"
+  # update/embed stream live — first run downloads ~2GB of models and a large
+  # vault can legitimately index for a while; silence here looks like a hang
+  # (and a timeout would kill healthy work). Ctrl-C is safe: re-run later.
+  printf "  Indexing notes (live output below; Ctrl-C is safe — resume later with: qmd update && qmd embed)\n\n"
+  if qmd update </dev/null; then
+    printf "\n  Building embeddings — first run downloads ~2GB of models (~5 min)...\n\n"
+    if qmd embed </dev/null; then
+      print_ok "QMD index built"
+    else
+      print_warn "QMD embedding didn't finish. Run it later: qmd embed"
+    fi
   else
     print_warn "QMD indexing didn't finish. Run it later: qmd update && qmd embed"
   fi
@@ -267,11 +367,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
       print_ok "apple-mail-mcp (read server) already installed"
       MAIL_READ_READY=true
     elif command -v pipx &>/dev/null; then
-      if prompt_yes_no "  Mail's read server needs apple-mail-mcp. Install it now? (pipx install apple-mail-mcp)"; then
-        printf "  Installing apple-mail-mcp...\n"
-        if pipx install apple-mail-mcp >/tmp/weave-mail-install.log 2>&1; then
+      if prompt_yes_no "  Mail's read server needs apple-mail-mcp. Install it now? (pipx install apple-mail-mcp)" "$NET_INSTALL_DEFAULT"; then
+        printf "  Installing apple-mail-mcp — progress log: /tmp/weave-mail-install.log\n"
+        rc=0
+        run_with_timeout 300 pipx install apple-mail-mcp >/tmp/weave-mail-install.log 2>&1 || rc=$?
+        if [[ "$rc" -eq 0 ]]; then
           print_ok "apple-mail-mcp installed"
           MAIL_READ_READY=true
+        elif [[ "$rc" -eq 124 ]]; then
+          print_warn "apple-mail-mcp install timed out after 5 minutes (log: /tmp/weave-mail-install.log). Install later: pipx install apple-mail-mcp"
         else
           print_warn "apple-mail-mcp install failed (log: /tmp/weave-mail-install.log). Install later: pipx install apple-mail-mcp"
         fi
@@ -587,7 +691,7 @@ if ! command -v obsidian &>/dev/null && ! { [[ "$OSTYPE" == "darwin"* ]] && [[ -
   note_todo "Install Obsidian 1.12+: https://obsidian.md"
 fi
 if [[ "$QMD_AVAILABLE" == false ]]; then
-  note_todo "Set up semantic search: npm install -g @tobilu/qmd  (then re-run setup, or: qmd init && qmd update && qmd embed)"
+  note_todo "Set up semantic search: npm install -g @tobilu/qmd  — or your package manager's global-install equivalent  (then re-run setup, or: qmd init && qmd update && qmd embed)"
 fi
 if [[ "$ENABLE_MAIL" == true && "$MAIL_READ_READY" == false ]]; then
   note_todo "Finish Apple Mail's read server: pipx install apple-mail-mcp"

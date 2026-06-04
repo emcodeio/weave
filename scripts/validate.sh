@@ -215,6 +215,18 @@ else
   check_fail "setup.sh has syntax errors"
 fi
 
+# macOS ships /bin/bash 3.2 and setup.sh's shebang resolves through PATH, so the
+# script must stay 3.2-clean. Gate it explicitly where a 3.2 bash is available.
+if [[ -x /bin/bash ]] && /bin/bash --version 2>/dev/null | head -1 | grep -q "version 3\."; then
+  if /bin/bash -n setup.sh 2>/dev/null; then
+    check_pass "setup.sh passes /bin/bash 3.2 syntax check"
+  else
+    check_fail "setup.sh uses bash-4+ syntax (fails /bin/bash 3.2)"
+  fi
+else
+  check_warn "No bash 3.2 at /bin/bash to verify against (fine on Linux; macOS covers this)"
+fi
+
 # ============================================================================
 # 8. Guide Notes
 # ============================================================================

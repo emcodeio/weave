@@ -96,3 +96,22 @@ Each should have: valid YAML frontmatter, correct `categories`/`areas`/`status`/
 - [ ] No QMD installed: `setup.sh` warns but continues; skills fall back to keyword search
 - [ ] Empty vault: all review skills handle "no projects, no inbox items" without errors
 - [ ] Custom areas: `setup.sh` creates area notes + `.base` files for non-default areas
+
+### Setup prompts (interactive)
+
+- [ ] Backspace edits the input at every prompt (readline via `read -e`)
+- [ ] Ctrl-D at a prompt falls back to the default instead of aborting the script
+
+### Non-interactive smoke test
+
+Runs setup end-to-end with defaults. Must NOT hang, and must skip network installs:
+
+```bash
+cd /tmp && git clone /path/to/weave weave-smoke && cd weave-smoke
+bash setup.sh </dev/null
+```
+
+- [ ] Completes in seconds — no hang at the QMD or pipx steps
+- [ ] Prints the "Non-interactive stdin detected" notice
+- [ ] Does NOT run `npm install -g` / `pipx install` (network prompts default-decline on non-tty stdin)
+- [ ] No `{{...}}` template literals remain (outside setup.sh / MAINTAINING.md); initial commit created
